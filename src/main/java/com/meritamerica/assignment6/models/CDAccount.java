@@ -1,9 +1,16 @@
 package com.meritamerica.assignment6.models;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class CDAccount extends BankAccount {
 //	Instance variables
 	private CDOffering cdOffering;
 
+	@Id
+	private int id;
+	
 // 	Default Constructor
 	public CDAccount() {
 	}

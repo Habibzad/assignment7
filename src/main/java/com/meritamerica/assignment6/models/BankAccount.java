@@ -2,7 +2,16 @@ package com.meritamerica.assignment6.models;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class BankAccount {
+	
+	@Id
+//	@Column(name = "id")
+	private int id;
+	
 //	Account Number Generator
 	private static long nextAccountNumber = 1;
 

@@ -1,9 +1,14 @@
 package com.meritamerica.assignment6.models;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class CDOffering {
 //	Static Variable
 	private static int nextID = 1;
 //	Instance Variables
+	@Id
 	private int id;
 	private double interestRate;
 	private int term;
