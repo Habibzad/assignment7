@@ -8,7 +8,7 @@ import com.meritamerica.assignment6.models.CDOffering;
 import com.meritamerica.assignment6.models.CheckingAccount;
 import com.meritamerica.assignment6.models.SavingsAccount;
 
-public interface MeritBank {
+public interface MeritBankService {
 	public List<CDOffering> getCDOfferings();
 
 	public CDOffering getCDOffering(int id);
@@ -22,8 +22,6 @@ public interface MeritBank {
 	public AccountHolder getAccountHolder(int id);
 
 	public AccountHolder addAccountHolder(AccountHolder accountHolder);
-
-	public double getAllAccountsBalances();
 
 	public CheckingAccount addCheckingAccount(int id, CheckingAccount checkingAccount);
 

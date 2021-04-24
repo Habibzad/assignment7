@@ -5,7 +5,10 @@ import java.util.List;
 
 //import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -19,28 +22,30 @@ public class AccountHolder {
 
 //	Instance Variables
 	@Id
-//	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@NotBlank(message = "First Name cannot be blank")
 	@NotNull(message = "First name cannot be blank")
-//	@Column(name = "first_name")
 	private String firstName;
-//	@Column(name = "middle_name")
 	private String middleName;
 	@NotBlank(message = "Last Name cannot be blank")
 	@NotNull(message = "Last name cannot be blank")
-//	@Column(name = "last_name")
 	private String lastName;
 	@NotBlank(message = "SSN cannot be blank")
 	@NotNull(message = "SSN cannot be blank")
-//	@Column(name = "ssn")
 	private String ssn;
-	private List<CheckingAccount> checkingAccounts;
-	private List<SavingsAccount> savingsAccounts;
-	private List<CDAccount> cdAccounts;
+
+	@OneToMany(mappedBy = "accountHolder")
+	private List<CheckingAccount> checkingAccounts = new ArrayList<>();
+	@OneToMany(mappedBy = "accountHolder")
+	private List<SavingsAccount> savingsAccounts = new ArrayList<>();
+	@OneToMany(mappedBy = "accountHolder")
+	private List<CDAccount> cdAccounts = new ArrayList<>();
+
 	private double combinedBalance;
 
 	public AccountHolder() {
+
 	}
 
 //	Parameterized Constructor
@@ -50,9 +55,6 @@ public class AccountHolder {
 		this.middleName = middleName;
 		this.lastName = lastName;
 		this.ssn = ssn;
-		this.checkingAccounts = new ArrayList<CheckingAccount>();
-		this.savingsAccounts = new ArrayList<SavingsAccount>();
-		this.cdAccounts = new ArrayList<CDAccount>();
 	}
 
 //	Getters and Setters

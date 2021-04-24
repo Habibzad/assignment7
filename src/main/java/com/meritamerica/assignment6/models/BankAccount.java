@@ -2,16 +2,15 @@ package com.meritamerica.assignment6.models;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 
-@Entity
-public class BankAccount {
-	
-	@Id
-//	@Column(name = "id")
-	private int id;
-	
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@MappedSuperclass
+public abstract class BankAccount {
+
 //	Account Number Generator
 	private static long nextAccountNumber = 1;
 
@@ -20,6 +19,11 @@ public class BankAccount {
 	private double balance;
 	private double interestRate;
 	private LocalDateTime openingDate;
+
+	@ManyToOne
+	@JoinColumn(name = "account_holder_id")
+	@JsonIgnore
+	private AccountHolder accountHolder;
 
 //	Default Constructor
 	public BankAccount() {
@@ -64,6 +68,14 @@ public class BankAccount {
 
 	public void setOpeningDate(LocalDateTime openingDate) {
 		this.openingDate = openingDate;
+	}
+
+	public AccountHolder getAccountHolder() {
+		return accountHolder;
+	}
+
+	public void setAccountHolder(AccountHolder accountHolder) {
+		this.accountHolder = accountHolder;
 	}
 
 	@Override
