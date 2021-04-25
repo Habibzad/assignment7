@@ -7,16 +7,21 @@ import org.springframework.stereotype.Service;
 
 import com.meritamerica.assignment6.exceptions.InvalidArgumentException;
 import com.meritamerica.assignment6.models.AccountHolder;
+import com.meritamerica.assignment6.models.AccountHoldersContactDetails;
 import com.meritamerica.assignment6.models.CDAccount;
 import com.meritamerica.assignment6.models.CheckingAccount;
 import com.meritamerica.assignment6.models.SavingsAccount;
 import com.meritamerica.assignment6.repository.AccountHolderRepo;
+import com.meritamerica.assignment6.repository.AccountHoldersContactDetailsRepo;
 
 @Service
 public class AccountHolderServiceImpl implements AccountHolderService {
 
 	@Autowired
 	private AccountHolderRepo accountHolderRepo;
+	
+	@Autowired
+	private AccountHoldersContactDetailsRepo contactDetailsRepo;
 
 	@Override
 	public AccountHolder addAccountHolder(AccountHolder accountHolder) {
@@ -53,4 +58,14 @@ public class AccountHolderServiceImpl implements AccountHolderService {
 		AccountHolder accountHolder = accountHolderRepo.getOne(id);
 		return accountHolder.getCdAccounts();
 	}
+
+	@Override
+	public AccountHoldersContactDetails addContactDetails(int id, AccountHoldersContactDetails contactDetails) {
+		AccountHolder accountHolder = accountHolderRepo.getOne(id);
+		contactDetails.setAccountHolder(accountHolder);
+		contactDetailsRepo.save(contactDetails);
+		return contactDetails;
+	}
+	
+
 }

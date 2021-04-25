@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 //import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,7 +16,6 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.meritamerica.assignment6.exceptions.ExceedsCombinedBalanceLimitException;
 import com.meritamerica.assignment6.exceptions.InvalidArgumentException;
 
 @Entity
@@ -47,10 +47,9 @@ public class AccountHolder {
 	private List<CDAccount> cdAccounts = new ArrayList<>();
 
 	private double combinedBalance;
-	
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id", referencedColumnName = "contact_id")
-    private AccountHoldersContactDetails accountHoldersContactDetails;
+
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "accountHolder")
+	private AccountHoldersContactDetails accountHoldersContactDetails;
 
 	public AccountHolder() {
 
@@ -78,10 +77,7 @@ public class AccountHolder {
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) throws InvalidArgumentException{
-		if(firstName=="") {
-			throw new InvalidArgumentException("First Name Cannot be blank");
-		}
+	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 
@@ -97,10 +93,7 @@ public class AccountHolder {
 		return lastName;
 	}
 
-	public void setLastName(String lastName) throws InvalidArgumentException{
-		if(lastName=="") {
-			throw new InvalidArgumentException("Last Name Cannot be blank");
-		}
+	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 
@@ -108,10 +101,7 @@ public class AccountHolder {
 		return ssn;
 	}
 
-	public void setSsn(String ssn) throws InvalidArgumentException{
-		if(ssn=="") {
-			throw new InvalidArgumentException("SSN Name Cannot be blank");
-		}
+	public void setSsn(String ssn) {
 		this.ssn = ssn;
 	}
 
@@ -137,106 +127,6 @@ public class AccountHolder {
 
 	public void setCdAccounts(List<CDAccount> cdAccounts) {
 		this.cdAccounts = cdAccounts;
-	}
-
-//	Add Account Methods	
-	/**
-	 * Add Checking Account Method
-	 * 
-	 * @param checkingAccount
-	 * @throws ExceedsCombinedBalanceLimitException
-	 */
-
-	public void addCheckingAccount(CheckingAccount checkingAccount) throws ExceedsCombinedBalanceLimitException {
-
-		if (getCombinedBalance() + checkingAccount.getBalance() >= BALANCE_LIMIT) {
-
-			throw new ExceedsCombinedBalanceLimitException(
-					"You have reached the maximum total balance across all accounts. Cannot create another account.");
-
-		} else {
-			this.checkingAccounts.add(checkingAccount);
-		}
-	}
-
-	public CheckingAccount addCheckingAccount(double openingBalance) throws ExceedsCombinedBalanceLimitException {
-		CheckingAccount newCheckingAccount = new CheckingAccount(openingBalance);
-
-		if (getCombinedBalance() + openingBalance >= BALANCE_LIMIT) {
-			throw new ExceedsCombinedBalanceLimitException(
-					"You have reached the maximum total balance across all accounts. Cannot create another.");
-		} else {
-			this.checkingAccounts.add(newCheckingAccount);
-			return newCheckingAccount;
-		}
-
-	}
-
-	/**
-	 * Add Saving Account Method
-	 * 
-	 * @param savingsAccount
-	 * @throws ExceedsCombinedBalanceLimitException
-	 */
-
-	public void addSavingsAccount(SavingsAccount savingsAccount) throws ExceedsCombinedBalanceLimitException {
-
-		if (getCombinedBalance() + savingsAccount.getBalance() >= BALANCE_LIMIT) {
-
-			throw new ExceedsCombinedBalanceLimitException(
-					"You have reached the maximum total balance across all accounts. Cannot create another account.");
-
-		} else {
-			this.savingsAccounts.add(savingsAccount);
-		}
-
-	}
-
-	public SavingsAccount addSavingsAccount(double openingBalance) throws ExceedsCombinedBalanceLimitException {
-		SavingsAccount newSavingsAccount = new SavingsAccount(openingBalance);
-		if (getCombinedBalance() + openingBalance >= BALANCE_LIMIT) {
-
-			throw new ExceedsCombinedBalanceLimitException(
-					"You have reached the maximum total balance across all accounts. Cannot create another.");
-
-		} else {
-			this.savingsAccounts.add(newSavingsAccount);
-			return newSavingsAccount;
-		}
-	}
-
-	/**
-	 * Add CD Account Method
-	 * 
-	 * @param cdAccount
-	 * @throws ExceedsCombinedBalanceLimitException
-	 */
-
-	public void addCdAccount(CDAccount cdAccount) throws ExceedsCombinedBalanceLimitException {
-
-		if (getCombinedBalance() + cdAccount.getBalance() >= BALANCE_LIMIT) {
-
-			throw new ExceedsCombinedBalanceLimitException(
-					"You have reached the maximum total balance across all accounts. Cannot create another account.");
-
-		} else {
-			this.cdAccounts.add(cdAccount);
-		}
-
-	}
-
-	public void addCdAccounts(double openingBalance, CDOffering offering) throws ExceedsCombinedBalanceLimitException {
-		CDAccount newCDAccount = new CDAccount(openingBalance, offering);
-
-		if (getCombinedBalance() + newCDAccount.getBalance() >= BALANCE_LIMIT) {
-
-			throw new ExceedsCombinedBalanceLimitException(
-					"You have reached the maximum total balance across all accounts. Cannot create another account.");
-
-		} else {
-			this.cdAccounts.add(newCDAccount);
-		}
-
 	}
 
 //	Get Number of Accounts
@@ -277,6 +167,14 @@ public class AccountHolder {
 			total += cdAccounts.get(i).getBalance();
 		}
 		return total;
+	}
+
+	public AccountHoldersContactDetails getAccountHoldersContactDetails() {
+		return accountHoldersContactDetails;
+	}
+
+	public void setAccountHoldersContactDetails(AccountHoldersContactDetails accountHoldersContactDetails) {
+		this.accountHoldersContactDetails = accountHoldersContactDetails;
 	}
 
 //	Get All Accounts Combined Balance

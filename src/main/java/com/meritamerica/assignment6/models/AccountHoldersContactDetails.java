@@ -1,35 +1,47 @@
 package com.meritamerica.assignment6.models;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class AccountHoldersContactDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int contact_id;
+	private int id;
 	private String phone;
 	private String email;
 	private String address;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "contact_id", referencedColumnName = "id")
+	public AccountHolder getAccountHolder() {
+		return accountHolder;
+	}
+
+	public void setAccountHolder(AccountHolder accountHolder) {
+		this.accountHolder = accountHolder;
+	}
+	@OneToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "account_id")
+	@JsonIgnore
 	private AccountHolder accountHolder;
 	
 	public AccountHoldersContactDetails() {}
-	
-	public int getContact_id() {
-		return contact_id;
+
+	public int getId() {
+		return id;
 	}
-	public void setContact_id(int contact_id) {
-		this.contact_id = contact_id;
+
+	public void setId(int id) {
+		this.id = id;
 	}
+
 	public String getPhone() {
 		return phone;
 	}
