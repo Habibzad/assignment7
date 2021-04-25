@@ -13,6 +13,7 @@ public class CDAccount extends BankAccount {
 //	Instance variables
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cdoffering_id")
+
 	private CDOffering cdOffering;
 
 	@Id

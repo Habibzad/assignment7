@@ -1,0 +1,95 @@
+package com.meritamerica.assignment6.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.meritamerica.assignment6.exceptions.ExceedsCombinedBalanceLimitException;
+import com.meritamerica.assignment6.exceptions.InvalidArgumentException;
+import com.meritamerica.assignment6.exceptions.NoSuchAccountException;
+import com.meritamerica.assignment6.models.AccountHolder;
+import com.meritamerica.assignment6.models.CDAccount;
+import com.meritamerica.assignment6.models.CDOffering;
+import com.meritamerica.assignment6.models.CheckingAccount;
+import com.meritamerica.assignment6.models.SavingsAccount;
+import com.meritamerica.assignment6.repository.AccountHolderRepo;
+import com.meritamerica.assignment6.repository.CDAccountRepo;
+import com.meritamerica.assignment6.repository.CDOfferingRepo;
+import com.meritamerica.assignment6.repository.CheckingAccountRepo;
+import com.meritamerica.assignment6.repository.SavingsAccountRepo;
+
+
+@Service
+public class AccountsServiceImpl implements AccountsService {
+	@Autowired
+	private AccountHolderRepo accountHolderRepo;
+	@Autowired
+	private CheckingAccountRepo checkingAccountRepo;
+	@Autowired
+	private SavingsAccountRepo savingsAccountRepo;
+	@Autowired
+	private CDAccountRepo cdAccountRepo;
+	@Autowired
+	private CDOfferingRepo cdOfferingRepo;
+
+//	Constructor
+	public AccountsServiceImpl() {
+	}
+	
+//	CheckingAccount Methods
+	@Override
+	public CheckingAccount addCheckingAccount(int id, CheckingAccount checkingAccount) 
+			throws ExceedsCombinedBalanceLimitException, 
+			NoSuchAccountException, 
+			InvalidArgumentException{
+		if(accountHolderRepo.existsById(id)) {
+			AccountHolder accountHolder = accountHolderRepo.getOne(id);
+			if(accountHolder.getCombinedBalance()+checkingAccount.getBalance()>250000) {
+				throw new ExceedsCombinedBalanceLimitException("Combined balance cannot be greater than 250000");
+			}
+			if(checkingAccount.getBalance()<0) {
+				throw new InvalidArgumentException("Balance cannt be negative");
+			}
+			CheckingAccount checkAcc = new CheckingAccount(checkingAccount.getBalance());
+			checkAcc.setAccountHolder(accountHolder);
+			return checkingAccountRepo.save(checkAcc);
+		}else {
+			throw new NoSuchAccountException("No such account found");
+		}
+	}
+	
+	
+	
+//	SavingsAccount Methods
+	@Override
+	public SavingsAccount addSavingsAccount(int id, SavingsAccount savingsAccount) throws NoSuchAccountException{
+		if(accountHolderRepo.existsById(id)) {
+			AccountHolder accountHolder = accountHolderRepo.getOne(id);
+			SavingsAccount savAcc = new SavingsAccount(savingsAccount.getBalance());
+			savAcc.setAccountHolder(accountHolder);
+			return savingsAccountRepo.save(savAcc);
+		}else {
+			throw new NoSuchAccountException("No such account found");
+		}
+	}
+	
+//	CDAccount Methods
+	@Override
+	public CDAccount addCDAccount(int id, CDAccount cdAccount) throws NoSuchAccountException{
+		if(accountHolderRepo.existsById(id)) {
+			AccountHolder accHolder = accountHolderRepo.getOne(id);
+			CDOffering offering = cdOfferingRepo.getOne(cdAccount.getCdOffering().getId());
+			CDAccount cdAcc = new CDAccount(cdAccount.getBalance(), offering);
+			cdAcc.setAccountHolder(accHolder);
+			return cdAccountRepo.save(cdAcc);
+		}else {
+			throw new NoSuchAccountException("No such account found");
+		}
+	}
+
+	@Override
+	public List<CheckingAccount> addCheckingAccount(int id) {
+		return checkingAccountRepo.findAll();
+	}
+}

@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class CDOffering {
 //	Static Variable
@@ -25,6 +27,7 @@ public class CDOffering {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cdOffering")
+	@JsonIgnore
 	private List<CDAccount> cdAccounts;
 
 	public List<CDAccount> getCdAccounts() {

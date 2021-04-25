@@ -3,12 +3,15 @@ package com.meritamerica.assignment6.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 //import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -43,6 +46,10 @@ public class AccountHolder {
 	private List<CDAccount> cdAccounts = new ArrayList<>();
 
 	private double combinedBalance;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id", referencedColumnName = "contact_id")
+    private AccountHoldersContactDetails accountHoldersContactDetails;
 
 	public AccountHolder() {
 
