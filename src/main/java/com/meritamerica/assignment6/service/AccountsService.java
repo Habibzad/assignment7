@@ -1,7 +1,5 @@
 package com.meritamerica.assignment6.service;
 
-import java.util.List;
-
 import com.meritamerica.assignment6.exceptions.ExceedsCombinedBalanceLimitException;
 import com.meritamerica.assignment6.exceptions.InvalidArgumentException;
 import com.meritamerica.assignment6.exceptions.NoSuchAccountException;
@@ -16,8 +14,6 @@ public interface AccountsService {
 			ExceedsCombinedBalanceLimitException, 
 			InvalidArgumentException;
 	
-	public List<CheckingAccount> addCheckingAccount(int id);
-
 	public SavingsAccount addSavingsAccount(int id, SavingsAccount savingsAccount) 
 			throws NoSuchAccountException, 
 			ExceedsCombinedBalanceLimitException, 

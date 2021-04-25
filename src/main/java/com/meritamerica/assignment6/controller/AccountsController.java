@@ -28,41 +28,44 @@ public class AccountsController {
 
 	@Autowired
 	private AccountsService accountsService;
-	
+
 	@Autowired
 	private AccountHolderService accountHolderService;
-	
-	@PostMapping("/accountholders/{id}/checkingAccount")
+
+	@PostMapping("/accountholders/{id}/checkingAccounts")
 	@ResponseStatus(HttpStatus.CREATED)
-	public CheckingAccount addCheckingAccount(@PathVariable ("id") int id, @RequestBody CheckingAccount checkingAccount) 
-			throws ExceedsCombinedBalanceLimitException, 
-			NoSuchAccountException, 
-			InvalidArgumentException {
+	public CheckingAccount addCheckingAccount(@PathVariable("id") int id, @RequestBody CheckingAccount checkingAccount)
+			throws ExceedsCombinedBalanceLimitException, NoSuchAccountException, InvalidArgumentException {
 		return accountsService.addCheckingAccount(id, checkingAccount);
 	}
-	
-	@GetMapping("/accountholders/{id}/checkingAccount")
-	public List<CheckingAccount> getCheckingAcconts(@PathVariable("id") int id){
+
+	@GetMapping("/accountholders/{id}/checkingAccounts") 
+	public List<CheckingAccount> getCheckingAccounts(@PathVariable("id") int id) throws InvalidArgumentException{
 		return accountHolderService.getCheckingAccounts(id);
 	}
-	
-	@PostMapping("/accountholders/{id}/savingsAccount")
+
+	@PostMapping("/accountholders/{id}/savingsAccounts")
 	@ResponseStatus(HttpStatus.CREATED)
-	public SavingsAccount addSavingsAccount(@PathVariable ("id") int id, @RequestBody SavingsAccount savingsAccount) 
-			throws ExceedsCombinedBalanceLimitException, 
-			NoSuchAccountException,
-			InvalidArgumentException{
+	public SavingsAccount addSavingsAccount(@PathVariable("id") int id, @RequestBody SavingsAccount savingsAccount)
+			throws ExceedsCombinedBalanceLimitException, NoSuchAccountException, InvalidArgumentException {
 		return accountsService.addSavingsAccount(id, savingsAccount);
 	}
 	
-	@PostMapping("/accountholders/{id}/cdAccount")
-	@ResponseStatus(HttpStatus.CREATED)
-	public CDAccount addCDAccount(@PathVariable ("id") int id, @RequestBody CDAccount cdAccount) 
-			throws ExceedsCombinedBalanceLimitException, 
-			NoSuchAccountException,
-			InvalidArgumentException{
-		return accountsService.addCDAccount(id, cdAccount); 
+	@GetMapping("/accountholders/{id}/savingsAccounts")
+	public List<SavingsAccount> getSavingsAccount(@PathVariable("id") int id) {
+		return accountHolderService.getSavingsAccounts(id);
 	}
 
+	@PostMapping("/accountholders/{id}/cdAccounts")
+	@ResponseStatus(HttpStatus.CREATED)
+	public CDAccount addCDAccount(@PathVariable("id") int id, @RequestBody CDAccount cdAccount)
+			throws ExceedsCombinedBalanceLimitException, NoSuchAccountException, InvalidArgumentException {
+		return accountsService.addCDAccount(id, cdAccount);
+	}
+	
+	@GetMapping("/accountholders/{id}/cdAccounts")
+	public List<CDAccount> getCDAccountS(@PathVariable("id") int id) {
+		return accountHolderService.getCDAccounts(id);
+	}
 
 }

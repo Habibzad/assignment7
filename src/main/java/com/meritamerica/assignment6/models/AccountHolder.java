@@ -16,6 +16,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.meritamerica.assignment6.exceptions.ExceedsCombinedBalanceLimitException;
+import com.meritamerica.assignment6.exceptions.InvalidArgumentException;
 
 @Entity
 public class AccountHolder {
@@ -77,7 +78,10 @@ public class AccountHolder {
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
+	public void setFirstName(String firstName) throws InvalidArgumentException{
+		if(firstName=="") {
+			throw new InvalidArgumentException("First Name Cannot be blank");
+		}
 		this.firstName = firstName;
 	}
 
@@ -93,7 +97,10 @@ public class AccountHolder {
 		return lastName;
 	}
 
-	public void setLastName(String lastName) {
+	public void setLastName(String lastName) throws InvalidArgumentException{
+		if(lastName=="") {
+			throw new InvalidArgumentException("Last Name Cannot be blank");
+		}
 		this.lastName = lastName;
 	}
 
@@ -101,7 +108,10 @@ public class AccountHolder {
 		return ssn;
 	}
 
-	public void setSsn(String ssn) {
+	public void setSsn(String ssn) throws InvalidArgumentException{
+		if(ssn=="") {
+			throw new InvalidArgumentException("SSN Name Cannot be blank");
+		}
 		this.ssn = ssn;
 	}
 

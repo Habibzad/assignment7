@@ -19,7 +19,6 @@ import com.meritamerica.assignment6.repository.CDOfferingRepo;
 import com.meritamerica.assignment6.repository.CheckingAccountRepo;
 import com.meritamerica.assignment6.repository.SavingsAccountRepo;
 
-
 @Service
 public class AccountsServiceImpl implements AccountsService {
 	@Autowired
@@ -33,63 +32,66 @@ public class AccountsServiceImpl implements AccountsService {
 	@Autowired
 	private CDOfferingRepo cdOfferingRepo;
 
-//	Constructor
+//	Default Constructor
 	public AccountsServiceImpl() {
 	}
-	
+
 //	CheckingAccount Methods
 	@Override
-	public CheckingAccount addCheckingAccount(int id, CheckingAccount checkingAccount) 
-			throws ExceedsCombinedBalanceLimitException, 
-			NoSuchAccountException, 
-			InvalidArgumentException{
-		if(accountHolderRepo.existsById(id)) {
+	public CheckingAccount addCheckingAccount(int id, CheckingAccount checkingAccount)
+			throws ExceedsCombinedBalanceLimitException, NoSuchAccountException, InvalidArgumentException {
+		if (accountHolderRepo.existsById(id)) {
 			AccountHolder accountHolder = accountHolderRepo.getOne(id);
-			if(accountHolder.getCombinedBalance()+checkingAccount.getBalance()>250000) {
+			if (accountHolder.getCombinedBalance() + checkingAccount.getBalance() > 250000) {
 				throw new ExceedsCombinedBalanceLimitException("Combined balance cannot be greater than 250000");
 			}
-			if(checkingAccount.getBalance()<0) {
+			if (checkingAccount.getBalance() < 0) {
 				throw new InvalidArgumentException("Balance cannt be negative");
 			}
 			CheckingAccount checkAcc = new CheckingAccount(checkingAccount.getBalance());
 			checkAcc.setAccountHolder(accountHolder);
 			return checkingAccountRepo.save(checkAcc);
-		}else {
-			throw new NoSuchAccountException("No such account found");
 		}
+		throw new NoSuchAccountException("No such account found");
 	}
-	
-	
-	
+
 //	SavingsAccount Methods
 	@Override
-	public SavingsAccount addSavingsAccount(int id, SavingsAccount savingsAccount) throws NoSuchAccountException{
-		if(accountHolderRepo.existsById(id)) {
+	public SavingsAccount addSavingsAccount(int id, SavingsAccount savingsAccount)
+			throws ExceedsCombinedBalanceLimitException, NoSuchAccountException, InvalidArgumentException {
+		if (accountHolderRepo.existsById(id)) {
 			AccountHolder accountHolder = accountHolderRepo.getOne(id);
+			if (accountHolder.getCombinedBalance() + savingsAccount.getBalance() > 250000) {
+				throw new ExceedsCombinedBalanceLimitException("Combined balance cannot be greater than 250000");
+			}
+			if (savingsAccount.getBalance() < 0) {
+				throw new InvalidArgumentException("Balance cannt be negative");
+			}
 			SavingsAccount savAcc = new SavingsAccount(savingsAccount.getBalance());
 			savAcc.setAccountHolder(accountHolder);
 			return savingsAccountRepo.save(savAcc);
-		}else {
-			throw new NoSuchAccountException("No such account found");
 		}
-	}
-	
-//	CDAccount Methods
-	@Override
-	public CDAccount addCDAccount(int id, CDAccount cdAccount) throws NoSuchAccountException{
-		if(accountHolderRepo.existsById(id)) {
-			AccountHolder accHolder = accountHolderRepo.getOne(id);
-			CDOffering offering = cdOfferingRepo.getOne(cdAccount.getCdOffering().getId());
-			CDAccount cdAcc = new CDAccount(cdAccount.getBalance(), offering);
-			cdAcc.setAccountHolder(accHolder);
-			return cdAccountRepo.save(cdAcc);
-		}else {
-			throw new NoSuchAccountException("No such account found");
-		}
+		throw new NoSuchAccountException("No such account found");
 	}
 
+//	CDAccount Methods
 	@Override
-	public List<CheckingAccount> addCheckingAccount(int id) {
-		return checkingAccountRepo.findAll();
+	public CDAccount addCDAccount(int id, CDAccount cdAccount)
+			throws ExceedsCombinedBalanceLimitException, NoSuchAccountException, InvalidArgumentException {
+		if (accountHolderRepo.existsById(id)) {
+			AccountHolder accountHolder = accountHolderRepo.getOne(id);
+			if (accountHolder.getCombinedBalance() + cdAccount.getBalance() > 250000) {
+				throw new ExceedsCombinedBalanceLimitException("Combined balance cannot be greater than 250000");
+			}
+			if (cdAccount.getBalance() < 0) {
+				throw new InvalidArgumentException("Balance cannt be negative");
+			}
+			CDOffering offering = cdOfferingRepo.getOne(cdAccount.getCdOffering().getId());
+			CDAccount cdAcc = new CDAccount(cdAccount.getBalance(), offering);
+			cdAcc.setAccountHolder(accountHolder);
+			return cdAccountRepo.save(cdAcc);
+		}
+		throw new NoSuchAccountException("No such account found");
 	}
+
 }
