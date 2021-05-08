@@ -81,7 +81,7 @@ org.h2.message.DbException: Wrong user name or password [28000-200]
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:339)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1340)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1329)
-	at com.meritamerica.assignment6.Assignment6Application.main(Assignment6Application.java:12)
+	at com.meritamerica.assignment7.Assignment6Application.main(Assignment6Application.java:12)
 Caused by: org.h2.jdbc.JdbcSQLInvalidAuthorizationSpecException: Wrong user name or password [28000-200]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:461)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:429)
@@ -146,7 +146,7 @@ org.h2.message.DbException: Wrong user name or password [28000-200]
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:339)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1340)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1329)
-	at com.meritamerica.assignment6.Assignment6Application.main(Assignment6Application.java:12)
+	at com.meritamerica.assignment7.Assignment6Application.main(Assignment6Application.java:12)
 Caused by: org.h2.jdbc.JdbcSQLInvalidAuthorizationSpecException: Wrong user name or password [28000-200]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:461)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:429)
@@ -211,7 +211,7 @@ org.h2.message.DbException: Wrong user name or password [28000-200]
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:339)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1340)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1329)
-	at com.meritamerica.assignment6.Assignment6Application.main(Assignment6Application.java:12)
+	at com.meritamerica.assignment7.Assignment6Application.main(Assignment6Application.java:12)
 Caused by: org.h2.jdbc.JdbcSQLInvalidAuthorizationSpecException: Wrong user name or password [28000-200]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:461)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:429)
