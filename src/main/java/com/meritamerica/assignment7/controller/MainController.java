@@ -12,9 +12,9 @@ public class MainController {
 		return "Welcome";
 	}
 	
-	@PostMapping("/authenticate")
-	public String authenticate(){
-		return "authenticate";
-	}
+//	@PostMapping("/authenticate")
+//	public String authenticate(){
+//		return "authenticate";
+//	}
 
 }
