@@ -22,28 +22,34 @@ import com.meritamerica.assignment7.service.AccountHolderService;
 @RestController
 public class AccountHolderController {
 	Logger logs = LoggerFactory.getLogger(AccountHolderController.class);
-	
+
 	@Autowired
 	private AccountHolderService accountHolderService;
-	
+
+	@GetMapping("/hello")
+	public String firstPage() {
+		return "Hello World";
+	}
+
 	@PostMapping("/accountholders")
 	@ResponseStatus(HttpStatus.CREATED)
 	public AccountHolder addAccountHolder(@RequestBody @Valid AccountHolder accountHolder) {
 		return accountHolderService.addAccountHolder(accountHolder);
 	}
-	
+
 	@GetMapping("/accountholders")
-	public List<AccountHolder> getAccountHolders(){
+	public List<AccountHolder> getAccountHolders() {
 		return accountHolderService.getAccountHolders();
 	}
-	
+
 	@GetMapping("/accountholders/{id}")
-	public AccountHolder getAccountHolders(@PathVariable("id") int id){
+	public AccountHolder getAccountHolders(@PathVariable("id") int id) {
 		return accountHolderService.getAccountHolder(id);
 	}
-	
+
 	@PostMapping("/accountholders/{id}/contactdetails")
-	public AccountHoldersContactDetails addDetails(@PathVariable("id") int id, @RequestBody AccountHoldersContactDetails accountDetails) {
+	public AccountHoldersContactDetails addDetails(@PathVariable("id") int id,
+			@RequestBody AccountHoldersContactDetails accountDetails) {
 		return accountHolderService.addContactDetails(id, accountDetails);
 	}
 }

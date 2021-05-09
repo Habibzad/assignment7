@@ -51,6 +51,18 @@ public class AccountHolder {
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "accountHolder")
 	private AccountHoldersContactDetails accountHoldersContactDetails;
 
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User user;
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public AccountHolder() {
 
 	}
