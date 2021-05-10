@@ -1,9 +1,12 @@
 package com.meritamerica.assignment7.security;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -16,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.meritamerica.assignment7.security.filters.JwtRequestFilter;
 
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsService myUserDetailsService;
@@ -45,5 +49,13 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authenticated().and().exceptionHandling().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+		
+		//Exception Handling: An HTTP 401 error should be returned if a JWT token is not provided
+		httpSecurity
+	    .exceptionHandling()
+	    .authenticationEntryPoint((request, response, e) -> 
+	    {
+	        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	    });
 	}
 }
