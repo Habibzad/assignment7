@@ -21,8 +21,8 @@ public class UserController {
 	@PostMapping("/authenticate/createuser")
 	@ResponseStatus(HttpStatus.CREATED)
 	public User addUser(@RequestBody User user) {
-		User newUser = new User(user.getUserName(), user.getPassword());
-		return userService.addUser(newUser);
+//		User newUser = new User(user.getUserName(), user.getPassword());
+		return userService.addUser(user);
 	}
 
 }

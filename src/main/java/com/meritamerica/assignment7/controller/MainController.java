@@ -32,7 +32,7 @@ public class MainController {
 
 	@GetMapping("/")
 	public String Home() {
-		return "Welcome to home page";
+		return "Welcome to Merit Bank Rest Services";
 	}
 
 	@PostMapping("/authenticate")

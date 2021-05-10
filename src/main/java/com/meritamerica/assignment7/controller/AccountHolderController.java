@@ -35,11 +35,13 @@ public class AccountHolderController {
 	}
 
 	@GetMapping("/accountholders")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public List<AccountHolder> getAccountHolders() {
 		return accountHolderService.getAccountHolders();
 	}
 
 	@GetMapping("/accountholders/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public AccountHolder getAccountHolders(@PathVariable("id") int id) {
 		return accountHolderService.getAccountHolder(id);
 	}

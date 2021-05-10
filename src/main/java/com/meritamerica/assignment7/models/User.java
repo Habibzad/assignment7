@@ -30,11 +30,11 @@ public class User {
 	public User() {
 	}
 
-	public User(String userName, String password) {
+	public User(String userName, String password, boolean active, String role) {
 		this.userName = userName;
 		this.password = password;
-		this.active = true;
-		this.roles = "ROLE_USER";
+		this.active = active;
+		this.roles = role;
 	}
 
 	public int getId() {
