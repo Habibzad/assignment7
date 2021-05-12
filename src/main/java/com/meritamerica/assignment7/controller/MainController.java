@@ -23,6 +23,7 @@ import com.meritamerica.assignment7.service.MyUserDetailsService;
 import com.meritamerica.assignment7.service.UserService;
 
 @RestController
+@RequestMapping("/api")
 public class MainController {
 
 	@Autowired

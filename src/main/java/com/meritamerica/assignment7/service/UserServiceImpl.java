@@ -21,4 +21,9 @@ public class UserServiceImpl implements UserService {
 	public User getUser(int id) {
 		return userRepository.getOne(id);
 	}
+	
+	@Override
+	public User getUserByUserName(String username) {
+		return userRepository.findByUserName(username).orElse(null);
+	}
 }
