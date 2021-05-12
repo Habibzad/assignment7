@@ -23,7 +23,6 @@ import com.meritamerica.assignment7.exceptions.InvalidArgumentException;
 public class AccountHolder {
 // 	Constants and static variables
 	public static final long BALANCE_LIMIT = 250000;
-	private static int nextID = 1;
 
 //	Instance Variables
 	@Id
@@ -72,7 +71,6 @@ public class AccountHolder {
 
 //	Parameterized Constructor
 	public AccountHolder(String firstName, String middleName, String lastName, String ssn) {
-		this.id = nextID++;
 		this.firstName = firstName;
 		this.middleName = middleName;
 		this.lastName = lastName;
