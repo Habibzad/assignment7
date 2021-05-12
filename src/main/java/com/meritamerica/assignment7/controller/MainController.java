@@ -1,6 +1,7 @@
 package com.meritamerica.assignment7.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -11,12 +12,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.meritamerica.assignment7.models.User;
 import com.meritamerica.assignment7.security.models.AuthenticationRequest;
 import com.meritamerica.assignment7.security.models.AuthenticationResponse;
 import com.meritamerica.assignment7.security.util.JwtUtil;
 import com.meritamerica.assignment7.service.MyUserDetailsService;
+import com.meritamerica.assignment7.service.UserService;
 
 @RestController
 public class MainController {
@@ -29,6 +33,9 @@ public class MainController {
 
 	@Autowired
 	private MyUserDetailsService userDetailsService;
+	
+	@Autowired
+	private UserService userService;
 
 	@GetMapping("/")
 	public String Home() {
@@ -51,5 +58,11 @@ public class MainController {
 		final String jwt = jwtTokenUtil.generateToken(userDetails);
 
 		return ResponseEntity.ok(new AuthenticationResponse(jwt));
+	}
+	
+	@PostMapping("/authenticate/createuser")
+	@ResponseStatus(HttpStatus.CREATED)
+	public User addUser(@RequestBody User user) {
+		return userService.addUser(user);
 	}
 }

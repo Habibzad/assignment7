@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,7 @@ import com.meritamerica.assignment7.service.CDOfferingService;
 
 @RestController
 public class CDOfferingController {
-	Logger logs = LoggerFactory.getLogger(AccountsController.class);
+	Logger logs = LoggerFactory.getLogger(BankAccountsController.class);
 
 	@Autowired
 	private CDOfferingService cdOfferingService;

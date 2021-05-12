@@ -21,8 +21,10 @@ import com.meritamerica.assignment7.security.filters.JwtRequestFilter;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+	
 	@Autowired
 	private UserDetailsService myUserDetailsService;
+	
 	@Autowired
 	private JwtRequestFilter jwtRequestFilter;
 
@@ -44,10 +46,14 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.csrf().disable().authorizeRequests().antMatchers("/authenticate").permitAll()
-				.antMatchers("/authenticate/createuser").hasRole("ADMIN").antMatchers("/").permitAll().anyRequest()
-				.authenticated().and().exceptionHandling().and().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		httpSecurity.csrf().disable()
+			.authorizeRequests()
+			.antMatchers("/authenticate/createuser").hasRole("ADMIN")
+			.antMatchers("/authenticate").permitAll()
+			.antMatchers("/").permitAll()
+			.anyRequest().authenticated()
+			.and().exceptionHandling()
+			.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 		
 		//Exception Handling: An HTTP 401 error should be returned if a JWT token is not provided

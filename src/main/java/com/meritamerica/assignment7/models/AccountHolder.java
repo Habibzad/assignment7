@@ -16,6 +16,7 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.meritamerica.assignment7.exceptions.InvalidArgumentException;
 
 @Entity
@@ -49,10 +50,12 @@ public class AccountHolder {
 	private double combinedBalance;
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "accountHolder")
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private AccountHoldersContactDetails accountHoldersContactDetails;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private User user;
 
 	public User getUser() {

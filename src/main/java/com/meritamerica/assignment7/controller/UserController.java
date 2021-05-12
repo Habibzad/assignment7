@@ -15,14 +15,5 @@ import com.meritamerica.assignment7.service.UserService;
 @RestController
 public class UserController {
 
-	@Autowired
-	private UserService userService;
-
-	@PostMapping("/authenticate/createuser")
-	@ResponseStatus(HttpStatus.CREATED)
-	public User addUser(@RequestBody User user) {
-//		User newUser = new User(user.getUserName(), user.getPassword());
-		return userService.addUser(user);
-	}
 
 }
