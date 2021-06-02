@@ -1,5 +1,7 @@
 package com.meritamerica.assignment7.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,4 +28,24 @@ public class UserServiceImpl implements UserService {
 	public User getUserByUserName(String username) {
 		return userRepository.findByUserName(username).orElse(null);
 	}
+
+	@Override
+	public List<User> getUsers() {
+		return userRepository.findAll();
+	}
+
+	@Override
+	public User updateUser(User user) {
+		User oldUser = userRepository.getOne(user.getId());
+		oldUser = user;
+		return userRepository.save(oldUser);
+	}
+
+	@Override
+	public User deleteUser(User user) {
+		 userRepository.delete(user);
+		 return user;
+	}
+	
+	
 }

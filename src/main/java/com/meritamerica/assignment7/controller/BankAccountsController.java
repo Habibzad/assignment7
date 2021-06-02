@@ -22,6 +22,7 @@ import com.meritamerica.assignment7.exceptions.NoSuchAccountException;
 import com.meritamerica.assignment7.models.CDAccount;
 import com.meritamerica.assignment7.models.CheckingAccount;
 import com.meritamerica.assignment7.models.SavingsAccount;
+import com.meritamerica.assignment7.repository.CheckingAccountRepo;
 import com.meritamerica.assignment7.service.AccountHolderService;
 import com.meritamerica.assignment7.service.AccountsService;
 
@@ -33,6 +34,9 @@ public class BankAccountsController {
 	@Autowired
 	private AccountsService accountsService;
 
+	@Autowired
+	private CheckingAccountRepo checkingAccountRepo;
+	
 	@Autowired
 	private AccountHolderService accountHolderService;
 
@@ -77,5 +81,10 @@ public class BankAccountsController {
 	public List<CDAccount> getCDAccountS(@PathVariable("id") int id) {
 		return accountHolderService.getCDAccounts(id);
 	}
-
+	
+	@GetMapping("/checkingaccounts")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public List<CheckingAccount> getCheckingAccounts(){
+		return checkingAccountRepo.findAll();
+	}
 }
