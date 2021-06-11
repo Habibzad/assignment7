@@ -28,21 +28,27 @@ public class AccountHolder {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
 	@NotBlank(message = "First Name cannot be blank")
 	@NotNull(message = "First name cannot be blank")
 	private String firstName;
+	
 	private String middleName;
+	
 	@NotBlank(message = "Last Name cannot be blank")
 	@NotNull(message = "Last name cannot be blank")
 	private String lastName;
+	
 	@NotBlank(message = "SSN cannot be blank")
 	@NotNull(message = "SSN cannot be blank")
 	private String ssn;
 
 	@OneToMany(mappedBy = "accountHolder")
 	private List<CheckingAccount> checkingAccounts = new ArrayList<>();
+	
 	@OneToMany(mappedBy = "accountHolder")
 	private List<SavingsAccount> savingsAccounts = new ArrayList<>();
+	
 	@OneToMany(mappedBy = "accountHolder")
 	private List<CDAccount> cdAccounts = new ArrayList<>();
 
