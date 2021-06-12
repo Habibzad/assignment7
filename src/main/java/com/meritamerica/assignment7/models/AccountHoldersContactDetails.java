@@ -9,7 +9,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.meritamerica.assignment7.dto.TransactionDto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class AccountHoldersContactDetails {
 
@@ -20,44 +28,8 @@ public class AccountHoldersContactDetails {
 	private String email;
 	private String address;
 	
-	public AccountHolder getAccountHolder() {
-		return accountHolder;
-	}
-
-	public void setAccountHolder(AccountHolder accountHolder) {
-		this.accountHolder = accountHolder;
-	}
 	@OneToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "account_id")
 	@JsonIgnore
 	private AccountHolder accountHolder;
-	
-	public AccountHoldersContactDetails() {}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
 }

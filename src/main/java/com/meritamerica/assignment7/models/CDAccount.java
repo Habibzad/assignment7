@@ -5,12 +5,12 @@ import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 @Entity
 public class CDAccount extends BankAccount {
 //	Instance variables
@@ -18,21 +18,6 @@ public class CDAccount extends BankAccount {
 	@JoinColumn(name = "cdoffering_id")
 
 	private CDOffering cdOffering;
-
-	public CDAccount() {
-	}
-	
-	private String getTime() {
-		//Create formatter
-		DateTimeFormatter FOMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy 'at' hh:mm");
-		 
-		//Zoned datetime instance
-		ZonedDateTime zdt = ZonedDateTime.now();
-		 
-		//Get formatted String
-		String zdtString = FOMATTER.format(zdt);
-		return zdtString;
-	}
 
 //	Parameterized Constructor	
 	public CDAccount(double balance, CDOffering offering) {
@@ -48,5 +33,12 @@ public class CDAccount extends BankAccount {
 
 	public void setCdOffering(CDOffering cdOffering) {
 		this.cdOffering = cdOffering;
+	}
+	
+	private String getTime() {
+		DateTimeFormatter FOMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy 'at' hh:mm");
+		ZonedDateTime zdt = ZonedDateTime.now();
+		String zdtString = FOMATTER.format(zdt);
+		return zdtString;
 	}
 }

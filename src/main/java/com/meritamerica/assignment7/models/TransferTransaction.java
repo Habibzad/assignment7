@@ -7,17 +7,6 @@ import javax.persistence.Entity;
 
 @Entity
 public class TransferTransaction extends Transaction {
-	private String getTime() {
-		//Create formatter
-		DateTimeFormatter FOMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm");
-		 
-		//Zoned datetime instance
-		ZonedDateTime zdt = ZonedDateTime.now();
-		 
-		//Get formatted String
-		String zdtString = FOMATTER.format(zdt);
-		return zdtString;
-	}
 
 	public TransferTransaction(BankAccount sourceAccount, BankAccount targetAccount, double amount) {
 		super();
@@ -28,5 +17,12 @@ public class TransferTransaction extends Transaction {
 		this.transactionType = "Transfer";
 		this.sourceAccount.withdraw(amount);
 		this.targetAccount.deposit(amount);
+	}
+	
+	private String getTime() {
+		DateTimeFormatter FOMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm");
+		ZonedDateTime zdt = ZonedDateTime.now();
+		String zdtString = FOMATTER.format(zdt);
+		return zdtString;
 	}
 }

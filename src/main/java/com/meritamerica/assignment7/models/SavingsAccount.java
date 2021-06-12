@@ -8,28 +8,22 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 @Entity
 public class SavingsAccount extends BankAccount {
-
-	private String getTime() {
-		//Create formatter
-		DateTimeFormatter FOMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy 'at' hh:mm");
-		 
-		//Zoned datetime instance
-		ZonedDateTime zdt = ZonedDateTime.now();
-		 
-		//Get formatted String
-		String zdtString = FOMATTER.format(zdt);
-		return zdtString;
-	}
-	
-// 	Default Constructor
-	public SavingsAccount() {
-	}
 
 //	Parameterized constructor
 	public SavingsAccount(double balance) {
 		super(balance);
 		this.openingDate = getTime();
+	}
+	
+	private String getTime() {
+		DateTimeFormatter FOMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy 'at' hh:mm");
+		ZonedDateTime zdt = ZonedDateTime.now();
+		String zdtString = FOMATTER.format(zdt);
+		return zdtString;
 	}
 }
