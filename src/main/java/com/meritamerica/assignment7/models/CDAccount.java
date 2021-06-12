@@ -16,9 +16,9 @@ public class CDAccount extends BankAccount {
 
 	private CDOffering cdOffering;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	private int id;
 
 // 	Default Constructor
 	public CDAccount() {

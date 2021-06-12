@@ -7,9 +7,9 @@ import javax.persistence.Id;
 
 @Entity
 public class SavingsAccount extends BankAccount {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	private int id;
 
 // 	Default Constructor
 	public SavingsAccount() {
