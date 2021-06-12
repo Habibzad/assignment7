@@ -1,6 +1,8 @@
 package com.meritamerica.assignment7.models;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,17 +20,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public abstract class BankAccount {
 
 //	Account Number Generator
-	private static long nextAccountNumber = 1;
+//	private static long nextAccountNumber = 1;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
-//	Instance Variables
-
 	private long accountNumber;
+	
 	private double balance;
 	private double interestRate;
-	private LocalDateTime openingDate;
+	
+	protected String openingDate;
 
 	@ManyToOne
 	@JoinColumn(name = "account_holder_id")
@@ -38,13 +39,25 @@ public abstract class BankAccount {
 //	Default Constructor
 	public BankAccount() {
 	}
+	
+	private String getTime() {
+		//Create formatter
+		DateTimeFormatter FOMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm");
+		 
+		//Zoned datetime instance
+		ZonedDateTime zdt = ZonedDateTime.now();
+		 
+		//Get formatted String
+		String zdtString = FOMATTER.format(zdt);
+		return zdtString;
+	}
 
 //	Parameterized Constructor
 	public BankAccount(double balance) {
-		this.accountNumber = nextAccountNumber++;
+//		this.accountNumber = nextAccountNumber++;
 		this.balance = balance;
 		this.interestRate = 0.01; // Interest Rate = 1%
-		this.openingDate = LocalDateTime.now();
+		this.openingDate = getTime();
 	}
 
 //	Getters and Setters
@@ -72,11 +85,11 @@ public abstract class BankAccount {
 		this.interestRate = interestRate;
 	}
 
-	public LocalDateTime getOpeningDate() {
+	public String getOpeningDate() {
 		return openingDate;
 	}
 
-	public void setOpeningDate(LocalDateTime openingDate) {
+	public void setOpeningDate(String openingDate) {
 		this.openingDate = openingDate;
 	}
 

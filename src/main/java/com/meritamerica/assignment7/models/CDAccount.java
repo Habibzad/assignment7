@@ -1,5 +1,8 @@
 package com.meritamerica.assignment7.models;
 
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,18 +19,26 @@ public class CDAccount extends BankAccount {
 
 	private CDOffering cdOffering;
 
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	private int id;
-
-// 	Default Constructor
 	public CDAccount() {
+	}
+	
+	private String getTime() {
+		//Create formatter
+		DateTimeFormatter FOMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy 'at' hh:mm");
+		 
+		//Zoned datetime instance
+		ZonedDateTime zdt = ZonedDateTime.now();
+		 
+		//Get formatted String
+		String zdtString = FOMATTER.format(zdt);
+		return zdtString;
 	}
 
 //	Parameterized Constructor	
 	public CDAccount(double balance, CDOffering offering) {
 		super(balance);
 		this.cdOffering = offering;
+		this.openingDate = getTime();
 	}
 
 //	Getters and Setters
