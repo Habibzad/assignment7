@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
 	public User addUser(User user) {
 		return userRepository.save(user);
 	}
-	
+
 	@Autowired
 	private AccountHolderRepo accountHolderRepo;
 
@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 	public User getUser(int id) {
 		return userRepository.getOne(id);
 	}
-	
+
 	@Override
 	public User getUserByUserName(String username) {
 		return userRepository.findByUserName(username).orElse(null);
@@ -48,20 +48,22 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User deleteUser(User user) throws NoResourceFoundException{
-		
+	public User deleteUser(User user) throws NoResourceFoundException {
+
 		User u = userRepository.getOne(user.getId());
-		
-		if(u!=null) {
-			AccountHolder accHolder = u.getAccountHolder();
-			accHolder.setUser(null);
-			accountHolderRepo.save(accHolder);
+
+		if (u != null) {
+			if (u.getAccountHolder() != null) {
+				AccountHolder accHolder = u.getAccountHolder();
+				accHolder.setUser(null);
+				accountHolderRepo.save(accHolder);
+				userRepository.delete(u);
+				return u;
+			}
 			userRepository.delete(u);
 			return u;
-		} else {
-			throw new NoResourceFoundException("Account Does Not Exist");
 		}
+		throw new NoResourceFoundException("Account Does Not Exist");
 	}
-	
-	
+
 }
