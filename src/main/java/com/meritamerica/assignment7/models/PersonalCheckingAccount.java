@@ -4,25 +4,25 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.Table;
 
 import com.meritamerica.assignment7.enums.AccountType;
 
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Entity
-public class SavingsAccount extends BankAccount {
+@Table(name = "Personal_Checking_Account")
+public class PersonalCheckingAccount extends BankAccount {
 
-//	Parameterized constructor
-	public SavingsAccount(double balance) {
+	// Parameterized constructor
+	public PersonalCheckingAccount(double balance) {
 		super(balance);
 		this.openingDate = getTime();
-		this.accountType = AccountType.SAVINGS;
+		this.accountType = AccountType.PERSONAL_CHECKING;
 	}
-	
+
 	private String getTime() {
 		DateTimeFormatter FOMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy 'at' hh:mm");
 		ZonedDateTime zdt = ZonedDateTime.now();

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,9 +23,10 @@ import com.meritamerica.assignment7.models.CDOffering;
 import com.meritamerica.assignment7.service.CDOfferingService;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api")
 public class CDOfferingController {
-	Logger logs = LoggerFactory.getLogger(BankAccountsController.class);
+	Logger logs = LoggerFactory.getLogger(AccountsController.class);
 
 	@Autowired
 	private CDOfferingService cdOfferingService;
@@ -38,5 +41,12 @@ public class CDOfferingController {
 	@GetMapping("/CDOfferings")
 	public List<CDOffering> getCDOfferings() {
 		return cdOfferingService.getCDOfferings();
+	}
+	
+	@DeleteMapping("/CDOfferings")
+	@ResponseStatus(HttpStatus.ACCEPTED)
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public String deleteCDOffering(@RequestBody CDOffering cdOffering) throws NotAuthorizedException, InvalidArgumentException {
+		return cdOfferingService.deleteCDOffering(cdOffering);
 	}
 }

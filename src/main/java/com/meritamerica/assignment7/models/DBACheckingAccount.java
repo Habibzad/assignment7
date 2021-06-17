@@ -4,9 +4,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.Table;
 
 import com.meritamerica.assignment7.enums.AccountType;
 
@@ -14,13 +12,13 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Entity
-public class SavingsAccount extends BankAccount {
-
+@Table(name = "DBA_Checking_Account")
+public class DBACheckingAccount extends BankAccount{
 //	Parameterized constructor
-	public SavingsAccount(double balance) {
+	public DBACheckingAccount(double balance) {
 		super(balance);
 		this.openingDate = getTime();
-		this.accountType = AccountType.SAVINGS;
+		this.accountType = AccountType.DBA_CHECKING;
 	}
 	
 	private String getTime() {

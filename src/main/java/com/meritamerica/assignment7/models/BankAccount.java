@@ -1,8 +1,13 @@
 package com.meritamerica.assignment7.models;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,85 +15,45 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.meritamerica.assignment7.enums.AccountStatus;
+import com.meritamerica.assignment7.enums.AccountType;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class BankAccount {
 
-//	Account Number Generator
-	private static long nextAccountNumber = 1;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
-//	Instance Variables
-
 	private long accountNumber;
 	private double balance;
 	private double interestRate;
-	private LocalDateTime openingDate;
-
+	protected String openingDate;
+	private AccountStatus status;
+	protected AccountType accountType;
 	@ManyToOne
 	@JoinColumn(name = "account_holder_id")
 	@JsonIgnore
 	private AccountHolder accountHolder;
 
-//	Default Constructor
-	public BankAccount() {
-	}
-
-//	Parameterized Constructor
+	//	Parameterized Constructor
 	public BankAccount(double balance) {
-		this.accountNumber = nextAccountNumber++;
 		this.balance = balance;
 		this.interestRate = 0.01; // Interest Rate = 1%
-		this.openingDate = LocalDateTime.now();
+		this.openingDate = getTime();
+		this.status = AccountStatus.OPEN;
 	}
-
-//	Getters and Setters
-	public long getAccountNumber() {
-		return accountNumber;
-	}
-
-	public void setAccountNumber(long accountNumber) {
-		this.accountNumber = accountNumber;
-	}
-
-	public double getBalance() {
-		return balance;
-	}
-
-	public void setBalance(double balance) {
-		this.balance = balance;
-	}
-
-	public double getInterestRate() {
-		return interestRate;
-	}
-
-	public void setInterestRate(double interestRate) {
-		this.interestRate = interestRate;
-	}
-
-	public LocalDateTime getOpeningDate() {
-		return openingDate;
-	}
-
-	public void setOpeningDate(LocalDateTime openingDate) {
-		this.openingDate = openingDate;
-	}
-
-	public AccountHolder getAccountHolder() {
-		return accountHolder;
-	}
-
-	public void setAccountHolder(AccountHolder accountHolder) {
-		this.accountHolder = accountHolder;
-	}
-
-// Account methods
+	
+	// Account methods
 	/**
 	 * This method withdraws from the account if the withdraw amount is less than
 	 * balance
@@ -105,7 +70,6 @@ public abstract class BankAccount {
 		}
 	}
 
-// 	Deposit Method
 	/**
 	 * This method deposits in the account if the deposit amount is greater than
 	 * zero
@@ -130,5 +94,24 @@ public abstract class BankAccount {
 	 */
 	public double futureValue(int years) {
 		return getBalance() * (Math.pow(1 + getInterestRate(), years));
+	}
+	
+	public String closeAccount() {
+		if(status == AccountStatus.OPEN) {
+			status = AccountStatus.CLOSED;
+		}
+		return "Account closed successfully!";
+	}
+	
+	private String getTime() {
+		//Create formatter
+		DateTimeFormatter FOMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm");
+		 
+		//Zoned datetime instance
+		ZonedDateTime zdt = ZonedDateTime.now();
+		 
+		//Get formatted String
+		String zdtString = FOMATTER.format(zdt);
+		return zdtString;
 	}
 }

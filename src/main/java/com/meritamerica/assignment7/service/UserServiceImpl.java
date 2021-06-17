@@ -5,7 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.meritamerica.assignment7.exceptions.NoResourceFoundException;
+import com.meritamerica.assignment7.models.AccountHolder;
 import com.meritamerica.assignment7.models.User;
+import com.meritamerica.assignment7.repository.AccountHolderRepo;
 import com.meritamerica.assignment7.repository.UserRepository;
 
 @Service
@@ -18,6 +21,9 @@ public class UserServiceImpl implements UserService {
 	public User addUser(User user) {
 		return userRepository.save(user);
 	}
+	
+	@Autowired
+	private AccountHolderRepo accountHolderRepo;
 
 	@Override
 	public User getUser(int id) {
@@ -42,9 +48,19 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User deleteUser(User user) {
-		 userRepository.delete(user);
-		 return user;
+	public User deleteUser(User user) throws NoResourceFoundException{
+		
+		User u = userRepository.getOne(user.getId());
+		
+		if(u!=null) {
+			AccountHolder accHolder = u.getAccountHolder();
+			accHolder.setUser(null);
+			accountHolderRepo.save(accHolder);
+			userRepository.delete(u);
+			return u;
+		} else {
+			throw new NoResourceFoundException("Account Does Not Exist");
+		}
 	}
 	
 	

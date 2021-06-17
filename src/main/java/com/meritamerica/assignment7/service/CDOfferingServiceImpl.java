@@ -21,6 +21,13 @@ public class CDOfferingServiceImpl implements CDOfferingService {
 		}
 		return cdOfferingRepo.save(cdOffering);
 	}
+	
+	@Override
+	public String deleteCDOffering(CDOffering cdOffering){
+		int id = cdOffering.getId();
+		cdOfferingRepo.deleteById(id);
+		return "CD Offering deleted successfully!";
+	}
 
 	@Override
 	public List<CDOffering> getCDOfferings() {
