@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.meritamerica.assignment7.dto.UserInfoDTO;
 import com.meritamerica.assignment7.models.User;
 import com.meritamerica.assignment7.security.models.AuthenticationRequest;
 import com.meritamerica.assignment7.security.models.AuthenticationResponse;
@@ -24,9 +26,9 @@ import com.meritamerica.assignment7.service.MyUserDetailsService;
 import com.meritamerica.assignment7.service.UserService;
 
 @RestController
-@RequestMapping("/api")
 @CrossOrigin
-public class MainController {
+@RequestMapping("/api")
+public class AuthController {
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -36,14 +38,9 @@ public class MainController {
 
 	@Autowired
 	private MyUserDetailsService userDetailsService;
-	
+
 	@Autowired
 	private UserService userService;
-
-	@GetMapping("/")
-	public String Home() {
-		return "Welcome to Merit Bank Rest Services";
-	}
 
 	@PostMapping("/authenticate")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest)
@@ -58,14 +55,10 @@ public class MainController {
 
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
-		final String jwt = jwtTokenUtil.generateToken(userDetails);
+		final String token = jwtTokenUtil.generateToken(userDetails);
 
-		return ResponseEntity.ok(new AuthenticationResponse(jwt));
-	}
-	
-	@PostMapping("/authenticate/createuser")
-	@ResponseStatus(HttpStatus.CREATED)
-	public User addUser(@RequestBody User user) {
-		return userService.addUser(user);
+		UserInfoDTO dto = new UserInfoDTO(token, userDetails.getAuthorities().toString());
+
+		return ResponseEntity.ok(dto);
 	}
 }

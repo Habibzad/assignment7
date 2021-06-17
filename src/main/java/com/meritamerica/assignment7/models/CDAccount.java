@@ -1,33 +1,33 @@
 package com.meritamerica.assignment7.models;
 
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+import com.meritamerica.assignment7.enums.AccountType;
+
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 @Entity
+@Table(name = "CD_Account")
 public class CDAccount extends BankAccount {
 //	Instance variables
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cdoffering_id")
-
 	private CDOffering cdOffering;
-
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	private int id;
-
-// 	Default Constructor
-	public CDAccount() {
-	}
 
 //	Parameterized Constructor	
 	public CDAccount(double balance, CDOffering offering) {
 		super(balance);
 		this.cdOffering = offering;
+		this.openingDate = getTime();
+		this.accountType = AccountType.CD;
 	}
 
 //	Getters and Setters
@@ -37,5 +37,12 @@ public class CDAccount extends BankAccount {
 
 	public void setCdOffering(CDOffering cdOffering) {
 		this.cdOffering = cdOffering;
+	}
+	
+	private String getTime() {
+		DateTimeFormatter FOMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy 'at' hh:mm");
+		ZonedDateTime zdt = ZonedDateTime.now();
+		String zdtString = FOMATTER.format(zdt);
+		return zdtString;
 	}
 }
