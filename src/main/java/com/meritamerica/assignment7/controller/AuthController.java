@@ -61,14 +61,4 @@ public class AuthController {
 
 		return ResponseEntity.ok(dto);
 	}
-
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-	
-	@PostMapping("/authenticate/createuser")
-	@ResponseStatus(HttpStatus.CREATED)
-	public User addUser(@RequestBody User user) {
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		return userService.addUser(user);
-	}
 }

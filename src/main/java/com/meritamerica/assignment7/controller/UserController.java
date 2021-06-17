@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,6 +44,16 @@ public class UserController {
 
 	@Autowired
 	private AccountsService accountsService;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@PostMapping("/authenticate/createuser")
+	@ResponseStatus(HttpStatus.CREATED)
+	public User addUser(@RequestBody User user) {
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		return userService.addUser(user);
+	}
 
 	@GetMapping("/users")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -53,7 +64,10 @@ public class UserController {
 	@PutMapping("/users")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public User updateUsers(@RequestBody User user) throws NoResourceFoundException {
-		return userService.updateUser(user);
+		if(userService.getUser(user.getId())!=null) {
+			return userService.updateUser(user);
+		}
+		throw new NoResourceFoundException("User not found");
 	}
 
 	@DeleteMapping("/users")
@@ -75,7 +89,7 @@ public class UserController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public PersonalCheckingAccount addCheckingAccount(@RequestBody PersonalCheckingAccount personalCheckingAccount)
 			throws NoResourceFoundException, NegativeAmountException, ExceedsCombinedBalanceLimitException,
-			NoSuchAccountException, InvalidArgumentException {
+			NoSuchAccountException, InvalidArgumentException, ReachedAccountLimitException {
 		if (personalCheckingAccount.getBalance() < 0) {
 			throw new NegativeAmountException();
 		}
@@ -89,7 +103,7 @@ public class UserController {
 			throw new ExceedsCombinedBalanceLimitException("exceeds limit of amount 250,000 max");
 		}
 
-		return accountsService.addCheckingAccount(accHolder.getId(), personalCheckingAccount);
+		return accountsService.addPersonalCheckingAccount(accHolder.getId(), personalCheckingAccount);
 	}
 
 	@GetMapping("/Me/checkingaccounts")
