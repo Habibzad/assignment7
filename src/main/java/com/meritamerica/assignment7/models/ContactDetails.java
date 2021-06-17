@@ -9,7 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.meritamerica.assignment7.dto.TransactionDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +18,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class AccountHoldersContactDetails {
+public class ContactDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -18,12 +18,10 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class AccountHolder {
@@ -34,45 +32,65 @@ public class AccountHolder {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	@NotBlank(message = "First Name cannot be blank")
 	@NotNull(message = "First name cannot be blank")
 	private String firstName;
-	
+
 	private String middleName;
-	
+
 	@NotBlank(message = "Last Name cannot be blank")
 	@NotNull(message = "Last name cannot be blank")
 	private String lastName;
-	
+
 	@NotBlank(message = "SSN cannot be blank")
 	@NotNull(message = "SSN cannot be blank")
 	private String ssn;
 
 	@OneToMany(mappedBy = "accountHolder")
-	private List<CheckingAccount> checkingAccounts = new ArrayList<>();
-	
+	private List<PersonalCheckingAccount> personalCheckingAccount = new ArrayList<>();
+
+	@OneToMany(mappedBy = "accountHolder")
+	private List<DBACheckingAccount> dbaCheckingAccounts = new ArrayList<>();
+
 	@OneToMany(mappedBy = "accountHolder")
 	private List<SavingsAccount> savingsAccounts = new ArrayList<>();
-	
+
+	@OneToMany(mappedBy = "accountHolder")
+	private List<RegularIRA> regularIRA = new ArrayList<>();
+
+	@OneToMany(mappedBy = "accountHolder")
+	private List<RothIRA> rothIRA = new ArrayList<>();
+
+	@OneToMany(mappedBy = "accountHolder")
+	private List<RolloverIRA> rolloverIRA = new ArrayList<>();
+
 	@OneToMany(mappedBy = "accountHolder")
 	private List<CDAccount> cdAccounts = new ArrayList<>();
 
 	private double combinedBalance;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "accountHolder")
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	private AccountHoldersContactDetails accountHoldersContactDetails;
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "accountHolder")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	private ContactDetails contactDetails;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private User user;
 
-	public double getCheckingBalance() {
+//	Parameterized Constructor
+	public AccountHolder(String firstName, String middleName, String lastName, String ssn) {
+		this.firstName = firstName;
+		this.middleName = middleName;
+		this.lastName = lastName;
+		this.ssn = ssn;
+	}
+
+	public double getPersonalCheckingBalance() {
 		double total = 0;
-		for (int i = 0; i < checkingAccounts.size(); i++) {
-			total += checkingAccounts.get(i).getBalance();
+		for (int i = 0; i < personalCheckingAccount.size(); i++) {
+			total += personalCheckingAccount.get(i).getBalance();
 		}
 		return total;
 	}
@@ -92,9 +110,50 @@ public class AccountHolder {
 		}
 		return total;
 	}
+	
+	public double getDbaCheckingBalance() {
+		double total = 0;
+		for (int i = 0; i < dbaCheckingAccounts.size(); i++) {
+			total += dbaCheckingAccounts.get(i).getBalance();
+		}
+		return total;
+	}
+	
+	public double getRegularIRABalance() {
+		double total = 0;
+		for (int i = 0; i < regularIRA.size(); i++) {
+			total += regularIRA.get(i).getBalance();
+		}
+		return total;
+	}
+	
+	public double getRolloverIRABalance() {
+		double total = 0;
+		for (int i = 0; i < rolloverIRA.size(); i++) {
+			total += rolloverIRA.get(i).getBalance();
+		}
+		return total;
+	}
+	
+	public double getRothIRABalance() {
+		double total = 0;
+		for (int i = 0; i < rothIRA.size(); i++) {
+			total += rothIRA.get(i).getBalance();
+		}
+		return total;
+	}
+
+//	Get All Accounts Combined Balance
 
 	public double getCombinedBalance() {
-		combinedBalance = getCheckingBalance() + getSavingsBalance() + getCDBalance();
+		combinedBalance = 
+				getPersonalCheckingBalance() + 
+				getSavingsBalance() + 
+				getCDBalance() +
+				getDbaCheckingBalance() +
+				getRegularIRABalance() +
+				getRolloverIRABalance()+
+				getRothIRABalance();
 		return combinedBalance;
 	}
 

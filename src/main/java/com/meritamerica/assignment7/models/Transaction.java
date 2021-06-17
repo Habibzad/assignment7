@@ -9,7 +9,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.meritamerica.assignment7.enums.TransactionType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,18 +25,18 @@ public abstract class Transaction {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-
+	
+	protected String transactionDate;
+	protected String description;
+	protected TransactionType transactionType;
+	protected double amount;
+	
 	@ManyToOne
 	@JoinColumn(name = "source_account_id")
-	@JsonIgnore
 	BankAccount sourceAccount;
-
+	
 	@ManyToOne
 	@JoinColumn(name = "target_account_id")
-	@JsonIgnore
 	BankAccount targetAccount;
 
-	String transactionDate;
-	String transactionType;
-	double amount;
 }

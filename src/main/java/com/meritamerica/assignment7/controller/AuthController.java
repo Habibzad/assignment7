@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +28,7 @@ import com.meritamerica.assignment7.service.UserService;
 @RestController
 @CrossOrigin
 @RequestMapping("/api")
-public class MainController {
+public class AuthController {
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -61,9 +62,13 @@ public class MainController {
 		return ResponseEntity.ok(dto);
 	}
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@PostMapping("/authenticate/createuser")
 	@ResponseStatus(HttpStatus.CREATED)
 	public User addUser(@RequestBody User user) {
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		return userService.addUser(user);
 	}
 }

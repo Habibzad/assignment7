@@ -10,5 +10,7 @@ public interface CDOfferingService {
 	public CDOffering addCDOffering(CDOffering cdOffering) throws InvalidArgumentException;
 
 	public List<CDOffering> getCDOfferings();
+
+	public String deleteCDOffering(CDOffering cdOffering);
 	
 }

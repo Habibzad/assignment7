@@ -10,12 +10,10 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "User")
@@ -31,4 +29,11 @@ public class User {
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
 	@JsonIgnore
 	private AccountHolder accountHolder;
+
+	public User(String userName, String password, boolean active, String role) {
+		this.userName = userName;
+		this.password = password;
+		this.active = active;
+		this.roles = role;
+	}
 }

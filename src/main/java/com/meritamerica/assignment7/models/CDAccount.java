@@ -7,16 +7,19 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import com.meritamerica.assignment7.enums.AccountType;
 
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Entity
+@Table(name = "CD_Account")
 public class CDAccount extends BankAccount {
 //	Instance variables
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cdoffering_id")
-
 	private CDOffering cdOffering;
 
 //	Parameterized Constructor	
@@ -24,6 +27,7 @@ public class CDAccount extends BankAccount {
 		super(balance);
 		this.cdOffering = offering;
 		this.openingDate = getTime();
+		this.accountType = AccountType.CD;
 	}
 
 //	Getters and Setters

@@ -5,14 +5,20 @@ import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Entity;
 
+import com.meritamerica.assignment7.enums.TransactionType;
+
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 @Entity
 public class WithdrawTransaction extends Transaction {
 
-	WithdrawTransaction(BankAccount targetAccount, double amount, String transactionType) {
+	public WithdrawTransaction(BankAccount targetAccount, String description, double amount) {
 		this.targetAccount = targetAccount;
+		this.description = description;
 		this.amount = amount;
 		this.transactionDate = getTime();
-		this.transactionType = transactionType;
+		this.transactionType = TransactionType.WITHDRAW;
 		this.targetAccount.withdraw(amount);
 	}
 
