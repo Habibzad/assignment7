@@ -46,33 +46,35 @@ public class AccountHolder {
 	@NotBlank(message = "SSN cannot be blank")
 	@NotNull(message = "SSN cannot be blank")
 	private String ssn;
-
-	@OneToMany(mappedBy = "accountHolder")
+	private String phone;
+	private String email;
+	private String address;
+	@OneToMany(mappedBy = "accountHolder", cascade = CascadeType.ALL)
 	private List<PersonalCheckingAccount> personalCheckingAccount = new ArrayList<>();
 
-	@OneToMany(mappedBy = "accountHolder")
+	@OneToMany(mappedBy = "accountHolder", cascade = CascadeType.ALL)
 	private List<DBACheckingAccount> dbaCheckingAccounts = new ArrayList<>();
 
-	@OneToMany(mappedBy = "accountHolder")
+	@OneToMany(mappedBy = "accountHolder", cascade = CascadeType.ALL)
 	private List<SavingsAccount> savingsAccounts = new ArrayList<>();
 
-	@OneToMany(mappedBy = "accountHolder")
+	@OneToMany(mappedBy = "accountHolder", cascade = CascadeType.ALL)
 	private List<RegularIRA> regularIRA = new ArrayList<>();
 
-	@OneToMany(mappedBy = "accountHolder")
+	@OneToMany(mappedBy = "accountHolder", cascade = CascadeType.ALL)
 	private List<RothIRA> rothIRA = new ArrayList<>();
 
-	@OneToMany(mappedBy = "accountHolder")
+	@OneToMany(mappedBy = "accountHolder", cascade = CascadeType.ALL)
 	private List<RolloverIRA> rolloverIRA = new ArrayList<>();
 
-	@OneToMany(mappedBy = "accountHolder")
+	@OneToMany(mappedBy = "accountHolder", cascade = CascadeType.ALL)
 	private List<CDAccount> cdAccounts = new ArrayList<>();
 
 	private double combinedBalance;
 
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "accountHolder")
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	private ContactDetails contactDetails;
+//	@OneToOne(mappedBy = "accountHolder")
+//	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+//	private ContactDetails contactDetails;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
@@ -80,11 +82,21 @@ public class AccountHolder {
 	private User user;
 
 //	Parameterized Constructor
-	public AccountHolder(String firstName, String middleName, String lastName, String ssn) {
+	public AccountHolder(
+			String firstName, 
+			String middleName, 
+			String lastName, 
+			String ssn,
+			String phone,
+			String email,
+			String address) {
 		this.firstName = firstName;
 		this.middleName = middleName;
 		this.lastName = lastName;
 		this.ssn = ssn;
+		this.phone = phone;
+		this.email = email;
+		this.address = address;
 	}
 
 	public double getPersonalCheckingBalance() {

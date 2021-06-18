@@ -9,36 +9,29 @@ import com.meritamerica.assignment7.exceptions.InvalidArgumentException;
 import com.meritamerica.assignment7.exceptions.NoResourceFoundException;
 import com.meritamerica.assignment7.models.AccountHolder;
 import com.meritamerica.assignment7.models.CDAccount;
-import com.meritamerica.assignment7.models.ContactDetails;
 import com.meritamerica.assignment7.models.PersonalCheckingAccount;
 import com.meritamerica.assignment7.models.SavingsAccount;
+import com.meritamerica.assignment7.models.User;
 import com.meritamerica.assignment7.repository.AccountHolderRepo;
-import com.meritamerica.assignment7.repository.ContactDetailsRepo;
 
 @Service
 public class AccountHolderServiceImpl implements AccountHolderService {
 
 	@Autowired
 	private AccountHolderRepo accountHolderRepo;
-	
-	@Autowired
-	private ContactDetailsRepo contactDetailsRepo;
 
 	@Override
 	public AccountHolder addAccountHolder(AccountHolder accountHolder) {
 		accountHolderRepo.save(accountHolder);
-		if(accountHolder.getContactDetails()!=null) {
-			accountHolder.getContactDetails().setAccountHolder(accountHolder);
-			contactDetailsRepo.save(accountHolder.getContactDetails());
-		}
 		return accountHolder;
 	}
 	
 	//update account holder
 	@Override
-	public AccountHolder updateAccountHolder(AccountHolder accountHolder) throws NoResourceFoundException {
-		AccountHolder accHold = accountHolderRepo.getOne(accountHolder.getId());
+	public AccountHolder updateAccountHolder(int id, AccountHolder accountHolder) throws NoResourceFoundException {
+		AccountHolder accHold = accountHolderRepo.getOne(id);
 		accHold = accountHolder;
+		accHold.setId(id);
 		return accountHolderRepo.save(accHold);
 	}
 
@@ -74,27 +67,32 @@ public class AccountHolderServiceImpl implements AccountHolderService {
 	}
 	
 	@Override
-	public AccountHolder deleteAccountHolder(AccountHolder accountHolder) throws NoResourceFoundException{
-		AccountHolder ach = accountHolderRepo.getOne(accountHolder.getId());
+	public AccountHolder deleteAccountHolder(int id) throws NoResourceFoundException{
+		AccountHolder ach = accountHolderRepo.getOne(id);
 		if(ach!=null) {
 			accountHolderRepo.delete(ach);
-			return accountHolder;
-		} else {
-			throw new NoResourceFoundException("Account Does Not Exist");
-		}
+			return ach;
+		} 
+		throw new NoResourceFoundException("Account Does Not Exist");
 	}
 
-	@Override
-	public ContactDetails addContactDetails(int id, ContactDetails contactDetails) {
-		AccountHolder accountHolder = accountHolderRepo.getOne(id);
-		contactDetails.setAccountHolder(accountHolder);
-		contactDetailsRepo.save(contactDetails);
-		return contactDetails;
-		
+//	@Override
+//	public ContactDetails addContactDetails(int id, ContactDetails contactDetails) {
 //		AccountHolder accountHolder = accountHolderRepo.getOne(id);
-//		accountHolder.setContactDetails(contactDetails);
-//		accountHolderRepo.save(accountHolder);
+//		contactDetails.setAccountHolder(accountHolder);
+//		contactDetailsRepo.save(contactDetails);
 //		return contactDetails;
+//	}
+
+	@Override
+	public User setUser(int id, User user) throws NoResourceFoundException{
+		AccountHolder ach = accountHolderRepo.getOne(id);
+		if(ach!=null) {
+			ach.setUser(user);
+			accountHolderRepo.save(ach);
+			return user;
+		}
+		throw new NoResourceFoundException("AccountHolder not found");
 	}
 	
 }

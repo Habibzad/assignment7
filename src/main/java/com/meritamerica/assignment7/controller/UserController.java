@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -61,19 +62,19 @@ public class UserController {
 		return userService.getUsers();
 	}
 
-	@PutMapping("/users")
+	@PutMapping("/users/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public User updateUsers(@RequestBody User user) throws NoResourceFoundException {
-		if(userService.getUser(user.getId())!=null) {
-			return userService.updateUser(user);
+	public User updateUsers(@PathVariable("id") int id, @RequestBody User user) throws NoResourceFoundException {
+		if(userService.getUser(id)!=null) {
+			return userService.updateUser(id, user);
 		}
 		throw new NoResourceFoundException("User not found");
 	}
 
-	@DeleteMapping("/users")
+	@DeleteMapping("/users/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public User deleteUsers(@RequestBody User user) throws NoResourceFoundException {
-		return userService.deleteUser(user);
+	public User deleteUsers(@PathVariable("id") int id) throws NoResourceFoundException {
+		return userService.deleteUser(id);
 	}
 
 	@GetMapping("/Me")

@@ -8,6 +8,6 @@ import com.meritamerica.assignment7.models.BankAccount;
 @Repository
 public interface AccountHolderRepo extends JpaRepository<AccountHolder, Integer> {
 
-	void save(BankAccount ba);
+//	void save(BankAccount ba);
 
 }

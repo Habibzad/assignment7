@@ -41,27 +41,28 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User updateUser(User user) {
-		User oldUser = userRepository.getOne(user.getId());
+	public User updateUser(int id, User user) {
+		User oldUser = userRepository.getOne(id);
 		oldUser = user;
+		oldUser.setId(id);
 		return userRepository.save(oldUser);
 	}
 
 	@Override
-	public User deleteUser(User user) throws NoResourceFoundException {
+	public User deleteUser(int id) throws NoResourceFoundException {
 
-		User u = userRepository.getOne(user.getId());
+		User user = userRepository.getOne(id);
 
-		if (u != null) {
-			if (u.getAccountHolder() != null) {
-				AccountHolder accHolder = u.getAccountHolder();
+		if (user != null) {
+			if (user.getAccountHolder() != null) {
+				AccountHolder accHolder = user.getAccountHolder();
 				accHolder.setUser(null);
 				accountHolderRepo.save(accHolder);
-				userRepository.delete(u);
-				return u;
+				userRepository.delete(user);
+				return user;
 			}
-			userRepository.delete(u);
-			return u;
+			userRepository.delete(user);
+			return user;
 		}
 		throw new NoResourceFoundException("Account Does Not Exist");
 	}

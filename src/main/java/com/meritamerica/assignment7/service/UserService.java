@@ -10,6 +10,6 @@ public interface UserService {
 	public User getUser(int id)throws NoResourceFoundException;
 	public User getUserByUserName(String username)throws NoResourceFoundException;
 	public List<User> getUsers();
-	public User updateUser(User user)throws NoResourceFoundException;
-	public User deleteUser(User user) throws NoResourceFoundException;
+	public User updateUser(int id, User user)throws NoResourceFoundException;
+	public User deleteUser(int id) throws NoResourceFoundException;
 }

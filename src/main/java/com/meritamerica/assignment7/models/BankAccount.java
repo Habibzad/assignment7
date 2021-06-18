@@ -40,6 +40,7 @@ public abstract class BankAccount {
 	protected String openingDate;
 	private AccountStatus status;
 	protected AccountType accountType;
+	
 	@ManyToOne
 	@JoinColumn(name = "account_holder_id")
 	@JsonIgnore
