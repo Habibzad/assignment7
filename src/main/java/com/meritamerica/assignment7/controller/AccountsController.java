@@ -26,6 +26,7 @@ import com.meritamerica.assignment7.models.BankAccount;
 import com.meritamerica.assignment7.models.CDAccount;
 import com.meritamerica.assignment7.models.DBACheckingAccount;
 import com.meritamerica.assignment7.models.PersonalCheckingAccount;
+import com.meritamerica.assignment7.models.RegularIRA;
 import com.meritamerica.assignment7.models.SavingsAccount;
 import com.meritamerica.assignment7.repository.BankAccountRepo;
 import com.meritamerica.assignment7.repository.PersonalCheckingAccountRepo;
@@ -176,6 +177,14 @@ public class AccountsController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public List<PersonalCheckingAccount> getPersonalCheckingAccounts(){
 		return personalCheckingAccountRepo.findAll();
+	}
+	
+	@PostMapping("/accountholders/{id}/regular-ira")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@ResponseStatus(HttpStatus.CREATED)
+	public RegularIRA addRegularIRA(@PathVariable("id") int id, @RequestBody RegularIRA regularIRA)
+			throws ExceedsCombinedBalanceLimitException, InvalidArgumentException, ReachedAccountLimitException, NoResourceFoundException {
+		return accountsService.addRegularIRA(id, regularIRA);
 	}
 	
 	@GetMapping("/all-accounts")

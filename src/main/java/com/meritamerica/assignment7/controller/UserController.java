@@ -17,16 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.meritamerica.assignment7.exceptions.ExceedsCombinedBalanceLimitException;
-import com.meritamerica.assignment7.exceptions.InvalidArgumentException;
-import com.meritamerica.assignment7.exceptions.NegativeAmountException;
 import com.meritamerica.assignment7.exceptions.NoResourceFoundException;
-import com.meritamerica.assignment7.exceptions.NoSuchAccountException;
-import com.meritamerica.assignment7.exceptions.ReachedAccountLimitException;
-import com.meritamerica.assignment7.models.AccountHolder;
-import com.meritamerica.assignment7.models.CDAccount;
-import com.meritamerica.assignment7.models.PersonalCheckingAccount;
-import com.meritamerica.assignment7.models.SavingsAccount;
 import com.meritamerica.assignment7.models.User;
 import com.meritamerica.assignment7.security.util.JwtUtil;
 import com.meritamerica.assignment7.service.AccountsService;
@@ -38,32 +29,42 @@ import com.meritamerica.assignment7.service.UserService;
 public class UserController {
 
 	@Autowired
-	private JwtUtil jwtTokenUtil;
-
-	@Autowired
 	private UserService userService;
 
 	@Autowired
-	private AccountsService accountsService;
-	
-	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
-	@PostMapping("/authenticate/createuser")
-	@ResponseStatus(HttpStatus.CREATED)
-	public User addUser(@RequestBody User user) {
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		return userService.addUser(user);
-	}
-
+	//Get all users
+	//-------------
 	@GetMapping("/users")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public List<User> getUsers() {
 		return userService.getUsers();
 	}
-
+	
+	//Get user by id
+	//--------------
+	@GetMapping("/users/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public User getUser(@PathVariable("id") int id) throws NoResourceFoundException {
+		return userService.getUser(id);
+	}
+	
+	//Create User
+	//-------------
+	@PostMapping("/createuser")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@ResponseStatus(HttpStatus.CREATED)
+	public User addUser(@RequestBody User user) {
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		return userService.addUser(user);
+	}
+	
+	//Update User
+	//------------
 	@PutMapping("/users/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@ResponseStatus(HttpStatus.ACCEPTED)
 	public User updateUsers(@PathVariable("id") int id, @RequestBody User user) throws NoResourceFoundException {
 		if(userService.getUser(id)!=null) {
 			return userService.updateUser(id, user);
@@ -71,104 +72,13 @@ public class UserController {
 		throw new NoResourceFoundException("User not found");
 	}
 
+	//Delete User
+	//------------
 	@DeleteMapping("/users/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@ResponseStatus(HttpStatus.ACCEPTED)
 	public User deleteUsers(@PathVariable("id") int id) throws NoResourceFoundException {
 		return userService.deleteUser(id);
-	}
-
-	@GetMapping("/Me")
-	@PreAuthorize("hasRole('ROLE_USER')")
-	public AccountHolder getAccountHolderById() throws NoResourceFoundException {
-		String username = jwtTokenUtil.getCurrentUserName();
-		User user = userService.getUserByUserName(username);
-		return user.getAccountHolder();
-	}
-
-	@PostMapping("/Me/checkingaccounts")
-	@PreAuthorize("hasRole('ROLE_USER')")
-	@ResponseStatus(HttpStatus.CREATED)
-	public PersonalCheckingAccount addCheckingAccount(@RequestBody PersonalCheckingAccount personalCheckingAccount)
-			throws NoResourceFoundException, NegativeAmountException, ExceedsCombinedBalanceLimitException,
-			NoSuchAccountException, InvalidArgumentException, ReachedAccountLimitException {
-		if (personalCheckingAccount.getBalance() < 0) {
-			throw new NegativeAmountException();
-		}
-		String username = jwtTokenUtil.getCurrentUserName();
-		User user = userService.getUserByUserName(username);
-		AccountHolder accHolder = user.getAccountHolder();
-		if (accHolder == null) {
-			throw new NoResourceFoundException("Invalid id");
-		}
-		if (accHolder.getCombinedBalance() + personalCheckingAccount.getBalance() > 250000) {
-			throw new ExceedsCombinedBalanceLimitException("exceeds limit of amount 250,000 max");
-		}
-
-		return accountsService.addPersonalCheckingAccount(accHolder.getId(), personalCheckingAccount);
-	}
-
-	@GetMapping("/Me/checkingaccounts")
-	@PreAuthorize("hasRole('ROLE_USER')")
-	public List<PersonalCheckingAccount> getPersonalCheckingAccount() throws NoResourceFoundException {
-		String username = jwtTokenUtil.getCurrentUserName();
-		User user = userService.getUserByUserName(username);
-		return user.getAccountHolder().getPersonalCheckingAccount();
-	}
-
-	@PostMapping("/Me/savingsaccounts")
-	@PreAuthorize("hasRole('ROLE_USER')")
-	@ResponseStatus(HttpStatus.CREATED)
-	public SavingsAccount addSavingsAccount(@RequestBody SavingsAccount savingsAccount)
-			throws NoResourceFoundException, NegativeAmountException, ExceedsCombinedBalanceLimitException,
-			NoSuchAccountException, InvalidArgumentException, ReachedAccountLimitException {
-		if (savingsAccount.getBalance() < 0) {
-			throw new NegativeAmountException();
-		}
-		String username = jwtTokenUtil.getCurrentUserName();
-		User user = userService.getUserByUserName(username);
-		AccountHolder accHolder = user.getAccountHolder();
-		if (accHolder == null) {
-			throw new NoResourceFoundException("Invalid id");
-		}
-		if (accHolder.getCombinedBalance() + savingsAccount.getBalance() > 250000) {
-			throw new ExceedsCombinedBalanceLimitException("exceeds limit of amount 250,000 max");
-		}
-		return accountsService.addSavingsAccount(accHolder.getId(), savingsAccount);
-	}
-
-	@GetMapping("/Me/savingsaccounts")
-	@PreAuthorize("hasRole('ROLE_USER')")
-	public List<SavingsAccount> getSavingsAccount() throws NoResourceFoundException {
-		String username = jwtTokenUtil.getCurrentUserName();
-		User user = userService.getUserByUserName(username);
-		return user.getAccountHolder().getSavingsAccounts();
-	}
-
-	@PostMapping("/Me/cdaccounts")
-	@PreAuthorize("hasRole('ROLE_USER')")
-	@ResponseStatus(HttpStatus.CREATED)
-	public CDAccount addCDAccount(@RequestBody CDAccount cdAccount)
-			throws NoResourceFoundException, NegativeAmountException, NoSuchAccountException,
-			ExceedsCombinedBalanceLimitException, InvalidArgumentException {
-		if (cdAccount.getBalance() < 0) {
-			throw new NegativeAmountException();
-		}
-		String username = jwtTokenUtil.getCurrentUserName();
-		User user = userService.getUserByUserName(username);
-		AccountHolder accHolder = user.getAccountHolder();
-
-		if (accHolder == null) {
-			throw new NoResourceFoundException("Invalid id");
-		}
-		return accountsService.addCDAccount(accHolder.getId(), cdAccount);
-	}
-
-	@GetMapping("/Me/cdaccounts")
-	@PreAuthorize("hasRole('ROLE_USER')")
-	public List<CDAccount> getCDAccount() throws NoResourceFoundException {
-		String username = jwtTokenUtil.getCurrentUserName();
-		User user = userService.getUserByUserName(username);
-		return user.getAccountHolder().getCdAccounts();
 	}
 
 }

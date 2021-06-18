@@ -16,6 +16,7 @@ import com.meritamerica.assignment7.models.CDAccount;
 import com.meritamerica.assignment7.models.CDOffering;
 import com.meritamerica.assignment7.models.DBACheckingAccount;
 import com.meritamerica.assignment7.models.PersonalCheckingAccount;
+import com.meritamerica.assignment7.models.RegularIRA;
 import com.meritamerica.assignment7.models.SavingsAccount;
 import com.meritamerica.assignment7.repository.AccountHolderRepo;
 import com.meritamerica.assignment7.repository.BankAccountRepo;
@@ -23,6 +24,7 @@ import com.meritamerica.assignment7.repository.CDAccountRepo;
 import com.meritamerica.assignment7.repository.CDOfferingRepo;
 import com.meritamerica.assignment7.repository.DBACheckingAccountRepo;
 import com.meritamerica.assignment7.repository.PersonalCheckingAccountRepo;
+import com.meritamerica.assignment7.repository.RegularIRARepo;
 import com.meritamerica.assignment7.repository.SavingsAccountRepo;
 
 @Service
@@ -37,10 +39,10 @@ public class AccountsServiceImpl implements AccountsService {
 	private CDAccountRepo cdAccountRepo;
 	@Autowired
 	private CDOfferingRepo cdOfferingRepo;
-
 	@Autowired
 	private DBACheckingAccountRepo dbaCheckingAccountRepo;
-	
+	@Autowired
+	private RegularIRARepo regularIRARepo;
 	@Autowired
 	private BankAccountRepo bankAccountRepo;
 
@@ -64,7 +66,7 @@ public class AccountsServiceImpl implements AccountsService {
 			savAcc.setAccountHolder(accountHolder);
 			return savingsAccountRepo.save(savAcc);
 		}
-		throw new NoResourceFoundException("Account holder not found found");
+		throw new NoResourceFoundException("Account holder not found");
 	}
 
 //	CheckingAccount Methods
@@ -134,6 +136,28 @@ public class AccountsServiceImpl implements AccountsService {
 		}
 		throw new NoResourceFoundException("Account holder not found");
 	}
+	
+	@Override
+	public RegularIRA addRegularIRA(int id, RegularIRA regularIRA)
+			throws ExceedsCombinedBalanceLimitException, InvalidArgumentException, NoResourceFoundException, ReachedAccountLimitException {
+		if (accountHolderRepo.existsById(id)) {
+			AccountHolder accountHolder = accountHolderRepo.getOne(id);
+			if (accountHolder.getCombinedBalance() + regularIRA.getBalance() > 250000) {
+				throw new ExceedsCombinedBalanceLimitException("Combined balance cannot be greater than 250000");
+			}
+			if (regularIRA.getBalance() < 0) {
+				throw new InvalidArgumentException("Initial balance cant be negative");
+			}
+			if (accountHolder.getRegularIRA().size() == 1) {
+				throw new ReachedAccountLimitException(
+						"Each account holder can have only one regular IRA");
+			}
+			RegularIRA rIRA = new RegularIRA(regularIRA.getBalance());
+			rIRA.setAccountHolder(accountHolder);
+			return regularIRARepo.save(rIRA);
+		}
+		throw new NoResourceFoundException("Account holder not found");
+	}
 
 	@Override
 	public boolean closeAccount(int accountNumber) throws InvalidArgumentException {
@@ -147,5 +171,7 @@ public class AccountsServiceImpl implements AccountsService {
 		bankAccountRepo.save(ba);
 		return true;
 	}
+
+
 
 }
