@@ -1,5 +1,7 @@
 package com.meritamerica.assignment7.models;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +44,10 @@ public class AccountHolder {
 	@NotBlank(message = "Last Name cannot be blank")
 	@NotNull(message = "Last name cannot be blank")
 	private String lastName;
-
+	
+	@NotBlank(message = "Last Name cannot be blank")
+	@NotNull(message = "Last name cannot be blank")
+	private String dob;
 	@NotBlank(message = "SSN cannot be blank")
 	@NotNull(message = "SSN cannot be blank")
 	private String ssn;
@@ -80,12 +85,13 @@ public class AccountHolder {
 	@JoinColumn(name = "user_id")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private User user;
-
+	
 //	Parameterized Constructor
 	public AccountHolder(
 			String firstName, 
 			String middleName, 
-			String lastName, 
+			String lastName,
+			String dob,
 			String ssn,
 			String phone,
 			String email,
@@ -93,6 +99,7 @@ public class AccountHolder {
 		this.firstName = firstName;
 		this.middleName = middleName;
 		this.lastName = lastName;
+		this.dob = dob;
 		this.ssn = ssn;
 		this.phone = phone;
 		this.email = email;
