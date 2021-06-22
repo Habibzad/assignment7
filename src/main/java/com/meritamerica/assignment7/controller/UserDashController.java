@@ -52,8 +52,8 @@ public class UserDashController {
 		return user.getAccountHolder();
 	}
 
-	@PostMapping("/Me/checkingaccounts")
-	@PreAuthorize("hasRole('ROLE_USER')")
+	@PostMapping("/Me/personal-checking-account")
+//	@PreAuthorize("hasRole('ROLE_USER')")
 	@ResponseStatus(HttpStatus.CREATED)
 	public PersonalCheckingAccount addCheckingAccount(@RequestBody PersonalCheckingAccount personalCheckingAccount)
 			throws NoResourceFoundException, NegativeAmountException, ExceedsCombinedBalanceLimitException,
@@ -74,7 +74,7 @@ public class UserDashController {
 		return accountsService.addPersonalCheckingAccount(accHolder.getId(), personalCheckingAccount);
 	}
 
-	@GetMapping("/Me/checkingaccounts")
+	@GetMapping("/Me/personal-checking-account")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public List<PersonalCheckingAccount> getPersonalCheckingAccount() throws NoResourceFoundException {
 		String username = jwtTokenUtil.getCurrentUserName();

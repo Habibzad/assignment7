@@ -201,4 +201,10 @@ public class AccountsController {
 		return accountsService.closeAccount(accountNumber);
 	}
 	
+//	@DeleteMapping("/delete-account/{accountNumber}")
+//	@PreAuthorize("hasRole('ROLE_ADMIN')")
+//	@ResponseStatus(HttpStatus.ACCEPTED)
+//	public BankAccount deleteAccount(@PathVariable int accountNumber) throws NoResourceFoundException {
+//		return accountsService.deleteAccount(accountNumber);
+//	}
 }

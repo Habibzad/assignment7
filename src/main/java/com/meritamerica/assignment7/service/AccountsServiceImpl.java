@@ -18,6 +18,7 @@ import com.meritamerica.assignment7.models.DBACheckingAccount;
 import com.meritamerica.assignment7.models.PersonalCheckingAccount;
 import com.meritamerica.assignment7.models.RegularIRA;
 import com.meritamerica.assignment7.models.SavingsAccount;
+import com.meritamerica.assignment7.models.User;
 import com.meritamerica.assignment7.repository.AccountHolderRepo;
 import com.meritamerica.assignment7.repository.BankAccountRepo;
 import com.meritamerica.assignment7.repository.CDAccountRepo;
@@ -169,5 +170,28 @@ public class AccountsServiceImpl implements AccountsService {
 		bankAccountRepo.save(ba);
 		return true;
 	}
+	
+//	@Override
+//	public BankAccount deleteAccount(int accountNum) throws NoResourceFoundException {
+//
+//		BankAccount ba = bankAccountRepo.getOne(accountNum);
+//
+//		if (ba != null) {
+//			if (ba.getAccountHolder() != null && ba.getStatus()==AccountStatus.CLOSED) {
+//				AccountType accountType = ba.getAccountType();
+//				AccountHolder accHolder = ba.getAccountHolder();
+//				if(accountType==AccountType.CD) {
+//					accHolder.setCdAccounts(null);
+//				}
+//				accountHolderRepo.save(accHolder);
+//				CDAccount cda = (CDAccount) ba;
+//				cdAccountRepo.delete(cda);
+//				return ba;
+//			}
+//			cdAccountRepo.delete((CDAccount) ba);
+//			return ba;
+//		}
+//		throw new NoResourceFoundException("Account Does Not Exist");
+//	}
 
 }

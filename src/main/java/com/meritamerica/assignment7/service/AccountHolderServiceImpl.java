@@ -13,12 +13,16 @@ import com.meritamerica.assignment7.models.PersonalCheckingAccount;
 import com.meritamerica.assignment7.models.SavingsAccount;
 import com.meritamerica.assignment7.models.User;
 import com.meritamerica.assignment7.repository.AccountHolderRepo;
+import com.meritamerica.assignment7.repository.UserRepository;
 
 @Service
 public class AccountHolderServiceImpl implements AccountHolderService {
 
 	@Autowired
 	private AccountHolderRepo accountHolderRepo;
+	
+	@Autowired
+	private UserRepository userRepository;
 
 	@Override
 	public AccountHolder addAccountHolder(AccountHolder accountHolder) {
@@ -88,7 +92,8 @@ public class AccountHolderServiceImpl implements AccountHolderService {
 	public User setUser(int id, User user) throws NoResourceFoundException{
 		AccountHolder ach = accountHolderRepo.getOne(id);
 		if(ach!=null) {
-			ach.setUser(user);
+			User u = userRepository.save(user);
+			ach.setUser(u);
 			accountHolderRepo.save(ach);
 			return user;
 		}

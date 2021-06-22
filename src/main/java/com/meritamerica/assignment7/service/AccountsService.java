@@ -11,6 +11,7 @@ import com.meritamerica.assignment7.models.DBACheckingAccount;
 import com.meritamerica.assignment7.models.PersonalCheckingAccount;
 import com.meritamerica.assignment7.models.RegularIRA;
 import com.meritamerica.assignment7.models.SavingsAccount;
+import com.meritamerica.assignment7.models.User;
 
 public interface AccountsService {
 
@@ -38,5 +39,7 @@ public interface AccountsService {
 			InvalidArgumentException, NoResourceFoundException, ReachedAccountLimitException;
 	
 	public boolean closeAccount(int accountNumber) throws InvalidArgumentException;
+
+//	public BankAccount deleteAccount(int accountNum) throws NoResourceFoundException;
 	
 }
