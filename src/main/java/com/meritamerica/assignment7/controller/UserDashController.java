@@ -53,7 +53,7 @@ public class UserDashController {
 	}
 
 	@PostMapping("/Me/personal-checking-account")
-//	@PreAuthorize("hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@ResponseStatus(HttpStatus.CREATED)
 	public PersonalCheckingAccount addCheckingAccount(@RequestBody PersonalCheckingAccount personalCheckingAccount)
 			throws NoResourceFoundException, NegativeAmountException, ExceedsCombinedBalanceLimitException,

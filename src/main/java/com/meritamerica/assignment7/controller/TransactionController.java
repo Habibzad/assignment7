@@ -37,7 +37,7 @@ public class TransactionController {
 	}
 	
 	@ResponseStatus(HttpStatus.ACCEPTED)
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+//	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/transfer")
 	public String transfer(@RequestBody TransactionDto transaction ) {
 		double amount = transaction.getAmount();
