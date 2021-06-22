@@ -19,6 +19,7 @@ public class SavingsAccount extends BankAccount {
 //	Parameterized constructor
 	public SavingsAccount(double balance) {
 		super(balance);
+		this.interestRate = 0.57; // Interest Rate = 3%
 		this.openingDate = getTime();
 		this.accountType = AccountType.SAVINGS;
 	}

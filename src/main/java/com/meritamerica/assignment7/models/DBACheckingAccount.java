@@ -17,6 +17,7 @@ public class DBACheckingAccount extends BankAccount{
 //	Parameterized constructor
 	public DBACheckingAccount(double balance) {
 		super(balance);
+		this.interestRate = 0.004; // Interest Rate = 3%
 		this.openingDate = getTime();
 		this.accountType = AccountType.DBA_CHECKING;
 	}

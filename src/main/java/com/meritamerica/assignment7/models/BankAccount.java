@@ -36,7 +36,7 @@ public abstract class BankAccount {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long accountNumber;
 	private double balance;
-	private double interestRate;
+	public double interestRate;
 	protected String openingDate;
 	private AccountStatus status;
 	protected AccountType accountType;

@@ -31,7 +31,7 @@ import com.meritamerica.assignment7.service.UserService;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/Me")
+@RequestMapping("/api")
 public class UserDashController {
 	
 	@Autowired

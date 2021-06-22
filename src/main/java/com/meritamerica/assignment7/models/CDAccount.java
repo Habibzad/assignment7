@@ -25,6 +25,7 @@ public class CDAccount extends BankAccount {
 //	Parameterized Constructor	
 	public CDAccount(double balance, CDOffering offering) {
 		super(balance);
+		this.interestRate = 0.75; // Interest Rate = 3%
 		this.cdOffering = offering;
 		this.openingDate = getTime();
 		this.accountType = AccountType.CD;

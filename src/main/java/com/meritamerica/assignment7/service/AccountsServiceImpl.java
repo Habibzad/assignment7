@@ -32,7 +32,7 @@ public class AccountsServiceImpl implements AccountsService {
 	@Autowired
 	private AccountHolderRepo accountHolderRepo;
 	@Autowired
-	private PersonalCheckingAccountRepo checkingAccountRepo;
+	private PersonalCheckingAccountRepo personalCheckingAccountRepo;
 	@Autowired
 	private SavingsAccountRepo savingsAccountRepo;
 	@Autowired
@@ -88,7 +88,7 @@ public class AccountsServiceImpl implements AccountsService {
 			}
 			PersonalCheckingAccount checkAcc = new PersonalCheckingAccount(checkingAccount.getBalance());
 			checkAcc.setAccountHolder(accountHolder);
-			return checkingAccountRepo.save(checkAcc);
+			return personalCheckingAccountRepo.save(checkAcc);
 		}
 		throw new NoSuchAccountException("No such account found");
 	}
@@ -162,16 +162,12 @@ public class AccountsServiceImpl implements AccountsService {
 	@Override
 	public boolean closeAccount(int accountNumber) throws InvalidArgumentException {
 		BankAccount ba = bankAccountRepo.findByAccountNumber(accountNumber);
-		if (ba.getAccountType() == AccountType.CD) {
-			if (ba.getBalance() > 0) {
-				throw new InvalidArgumentException("Account balance should be 0 before closing");
-			}
+		if (ba.getBalance() > 0) {
+			throw new InvalidArgumentException("Account balance should be 0 before closing");
 		}
 		ba.setStatus(AccountStatus.CLOSED);
 		bankAccountRepo.save(ba);
 		return true;
 	}
-
-
 
 }

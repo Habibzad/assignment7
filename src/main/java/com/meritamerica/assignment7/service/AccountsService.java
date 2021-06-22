@@ -36,7 +36,7 @@ public interface AccountsService {
 	public RegularIRA addRegularIRA(int id, RegularIRA regularIRA) 
 			throws ExceedsCombinedBalanceLimitException, 
 			InvalidArgumentException, NoResourceFoundException, ReachedAccountLimitException;
-
+	
 	public boolean closeAccount(int accountNumber) throws InvalidArgumentException;
 	
 }

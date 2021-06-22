@@ -19,6 +19,7 @@ public class PersonalCheckingAccount extends BankAccount {
 	// Parameterized constructor
 	public PersonalCheckingAccount(double balance) {
 		super(balance);
+		this.interestRate = 0.05; // Interest Rate = 3%
 		this.openingDate = getTime();
 		this.accountType = AccountType.PERSONAL_CHECKING;
 	}

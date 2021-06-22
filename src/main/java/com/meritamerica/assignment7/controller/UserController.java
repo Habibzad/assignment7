@@ -65,7 +65,7 @@ public class UserController {
 	@PutMapping("/users/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@ResponseStatus(HttpStatus.ACCEPTED)
-	public User updateUsers(@PathVariable("id") int id, @RequestBody User user) throws NoResourceFoundException {
+	public User updateUser(@PathVariable("id") int id, @RequestBody User user) throws NoResourceFoundException {
 		if(userService.getUser(id)!=null) {
 			return userService.updateUser(id, user);
 		}
