@@ -5,13 +5,11 @@ import com.meritamerica.assignment7.exceptions.InvalidArgumentException;
 import com.meritamerica.assignment7.exceptions.NoResourceFoundException;
 import com.meritamerica.assignment7.exceptions.NoSuchAccountException;
 import com.meritamerica.assignment7.exceptions.ReachedAccountLimitException;
-import com.meritamerica.assignment7.models.BankAccount;
 import com.meritamerica.assignment7.models.CDAccount;
 import com.meritamerica.assignment7.models.DBACheckingAccount;
 import com.meritamerica.assignment7.models.PersonalCheckingAccount;
 import com.meritamerica.assignment7.models.RegularIRA;
 import com.meritamerica.assignment7.models.SavingsAccount;
-import com.meritamerica.assignment7.models.User;
 
 public interface AccountsService {
 

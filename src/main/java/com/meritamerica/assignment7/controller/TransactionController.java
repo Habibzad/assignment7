@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.meritamerica.assignment7.dto.TransactionDto;
-import com.meritamerica.assignment7.models.BankAccount;
 import com.meritamerica.assignment7.models.Transaction;
 import com.meritamerica.assignment7.repository.TransactionRepo;
 import com.meritamerica.assignment7.service.TransactionService;

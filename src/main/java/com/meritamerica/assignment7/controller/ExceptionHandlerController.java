@@ -2,16 +2,13 @@ package com.meritamerica.assignment7.controller;
 
 import java.util.Date;
 
-import org.springdoc.api.ErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
 import com.meritamerica.assignment7.exceptions.ExceptionResponse;
-import com.meritamerica.assignment7.exceptions.InvalidArgumentException;
 
 @RestControllerAdvice
 public class ExceptionHandlerController {

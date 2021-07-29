@@ -52,7 +52,6 @@ public class AccountHolderServiceImpl implements AccountHolderService {
 	@Override
 	public List<PersonalCheckingAccount> getPersonalCheckingAccounts(int id) throws InvalidArgumentException{
 		if(accountHolderRepo.existsById(id)) {
-			AccountHolder accountHolder = accountHolderRepo.getOne(id);
 			return null;
 		}
 		throw new InvalidArgumentException("No such account holder exist");

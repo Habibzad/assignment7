@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.meritamerica.assignment7.exceptions.NoResourceFoundException;
 import com.meritamerica.assignment7.models.User;
-import com.meritamerica.assignment7.security.util.JwtUtil;
-import com.meritamerica.assignment7.service.AccountsService;
 import com.meritamerica.assignment7.service.UserService;
 
 @RestController

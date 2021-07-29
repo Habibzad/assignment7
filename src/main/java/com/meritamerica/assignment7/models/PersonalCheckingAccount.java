@@ -8,7 +8,6 @@ import javax.persistence.Table;
 
 import com.meritamerica.assignment7.enums.AccountType;
 
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor

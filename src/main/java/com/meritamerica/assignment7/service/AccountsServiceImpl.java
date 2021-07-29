@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.meritamerica.assignment7.enums.AccountStatus;
-import com.meritamerica.assignment7.enums.AccountType;
 import com.meritamerica.assignment7.exceptions.ExceedsCombinedBalanceLimitException;
 import com.meritamerica.assignment7.exceptions.InvalidArgumentException;
 import com.meritamerica.assignment7.exceptions.NoResourceFoundException;
@@ -18,7 +17,6 @@ import com.meritamerica.assignment7.models.DBACheckingAccount;
 import com.meritamerica.assignment7.models.PersonalCheckingAccount;
 import com.meritamerica.assignment7.models.RegularIRA;
 import com.meritamerica.assignment7.models.SavingsAccount;
-import com.meritamerica.assignment7.models.User;
 import com.meritamerica.assignment7.repository.AccountHolderRepo;
 import com.meritamerica.assignment7.repository.BankAccountRepo;
 import com.meritamerica.assignment7.repository.CDAccountRepo;
