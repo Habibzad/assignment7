@@ -9,11 +9,11 @@
 		<version>2.4.5</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.meritamerica</groupId>
-	<artifactId>assignment7</artifactId>
+	<groupId>com.example</groupId>
+	<artifactId>bank_ease_pro</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>assignment7</name>
-	<description>MeritBank Assignment</description>
+	<name>Bank Ease Pro</name>
+	<description>Core Banking Solution</description>
 	<properties>
 		<java.version>8</java.version>
 	</properties>
